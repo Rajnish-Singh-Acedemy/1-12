@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Login - RDX Singh Academy</title>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Student Login</h2>
+        <input type="email" id="email" placeholder="Apna Email Daalein">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn-main" style="width:100%" onclick="handleAuth()">Login / Sign Up</button>
+        <p id="msg" style="color: red;"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
