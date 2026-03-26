@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>My Dashboard</title>
+</head>
+<body>
+    <header>
+        <div class="logo">My Classroom</div>
+        <button onclick="logout()">Logout</button>
+    </header>
+
+    <main style="padding: 20px;">
+        <div id="payment-box" style="display:none; text-align:center;">
+            <h3>Aapka Course Active Nahi Hai</h3>
+            <p>Class 10th (Demo) ke liye ₹500 ka bhugtan karein.</p>
+            <button class="btn-main" onclick="startPayment()">Pay Now</button>
+        </div>
+
+        <div id="video-box" style="display:none;">
+            <h3>Welcome to Today's Class</h3>
+            <iframe width="100%" height="450" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </main>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
