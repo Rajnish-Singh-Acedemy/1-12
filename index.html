@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RDX Singh Academy | Online Coaching</title>
-    <link rel="stylesheet" href="style.css">
+    <title>RDX Singh Academy | Online Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">RDX Singh Academy</div>
-            <div class="nav-links">
-                <a href="login.html" class="btn-login">Login / Register</a>
-            </div>
-        </nav>
+<body class="bg-gray-50">
+    <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-lg">
+        <h1 class="text-2xl font-bold">RDX Singh Academy</h1>
+        <div class="space-x-4 text-sm md:text-base">
+            <a href="index.html" class="hover:underline">Home</a>
+            <a href="academic.html" class="hover:underline">Academic</a>
+            <a href="professional.html" class="hover:underline">Accounting</a>
+            <a href="competitive.html" class="hover:underline">Competitive</a>
+        </div>
+    </nav>
+
+    <header class="py-16 text-center bg-white">
+        <h2 class="text-4xl font-extrabold text-gray-800">Sikho Aur Badho</h2>
+        <p class="mt-4 text-gray-600">Class 1-12, Accounting, aur Competitive Exams ki taiyari ab ek hi jagah.</p>
     </header>
 
-    <section class="hero">
-        <h1>Class 1 se 12 tak ki Best Online Coaching</h1>
-        <p>Live Classes aur Expert Video Lectures ke saath apni padhai ko naya mod dein.</p>
-        <button onclick="window.location.href='login.html'" class="btn-main">Abhi Shuru Karein</button>
-    </section>
-
-    <section class="features">
-        <div class="card"><h3>Live Classes</h3><p>Direct teacher se sawal poochein.</p></div>
-        <div class="card"><h3>Recorded Videos</h3><p>Kabhi bhi, kahin bhi revision karein.</p></div>
-        <div class="card"><h3>Easy Payments</h3><p>Secure online registration aur fees.</p></div>
-    </section>
-
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
-    <script src="script.js"></script>
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4 pb-12">
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl border-t-4 border-blue-500">
+            <h3 class="text-xl font-bold">Academic (1-12)</h3>
+            <p class="text-gray-500 my-4">Sabhi streams ke liye sampurna coaching.</p>
+            <a href="academic.html" class="text-blue-600 font-semibold underline">View Courses & Fees</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl border-t-4 border-green-500">
+            <h3 class="text-xl font-bold">Accounting & Ops</h3>
+            <p class="text-gray-500 my-4">Field training aur professional expertise.</p>
+            <a href="professional.html" class="text-green-600 font-semibold underline">View Courses & Fees</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl border-t-4 border-red-500">
+            <h3 class="text-xl font-bold">Competitive Exams</h3>
+            <p class="text-gray-500 my-4">SSC, Railway, Bank aur Police taiyari.</p>
+            <a href="competitive.html" class="text-red-600 font-semibold underline">View Courses & Fees</a>
+        </div>
+    </main>
 </body>
 </html>
