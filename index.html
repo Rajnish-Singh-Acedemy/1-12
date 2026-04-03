@@ -7,28 +7,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-lg">
-        <h1 class="text-2xl font-bold">RDX Singh Academy</h1>
-        <div class="space-x-4 text-sm md:text-base">
-            <a href="index.html" class="hover:underline">Home</a>
-            <div class="relative group inline-block">
-    <button class="hover:underline px-2 py-1">Academic</button>
+   <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-lg sticky top-0 z-50">
+    <h1 class="text-2xl font-bold">RDX Singh Academy</h1>
+    <div class="flex space-x-4 text-sm md:text-base">
+        <a href="index.html" class="hover:underline py-1">Home</a>
+        
+        <div class="relative group inline-block">
+            <button class="hover:underline px-2 py-1 flex items-center gap-1">
+                Academic
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
 
-    <div class="absolute left-0 hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg w-44 z-50">
-        <a href="acadamic/class1.html" class="block px-4 py-2 hover:bg-gray-200">Class 1</a>
-        <a href="classes/class2.html" class="block px-4 py-2 hover:bg-gray-200">Class 2</a>
-        <a href="classes/class3.html" class="block px-4 py-2 hover:bg-gray-200">Class 3</a>
-        <a href="classes/class4.html" class="block px-4 py-2 hover:bg-gray-200">Class 4</a>
-        <a href="classes/class5.html" class="block px-4 py-2 hover:bg-gray-200">Class 5</a>
-        <a href="classes/class6.html" class="block px-4 py-2 hover:bg-gray-200">Class 6</a>
-        <a href="classes/class7.html" class="block px-4 py-2 hover:bg-gray-200">Class 7</a>
-        <a href="classes/class8.html" class="block px-4 py-2 hover:bg-gray-200">Class 8</a>
-        <a href="classes/class9.html" class="block px-4 py-2 hover:bg-gray-200">Class 9</a>
-        <a href="classes/class10.html" class="block px-4 py-2 hover:bg-gray-200">Class 10</a>
-        <a href="classes/class11.html" class="block px-4 py-2 hover:bg-gray-200">Class 11</a>
-        <a href="classes/class12.html" class="block px-4 py-2 hover:bg-gray-200">Class 12</a>
+            <div class="absolute left-0 hidden group-hover:block pt-2 w-44 z-50">
+                <div class="bg-white text-black rounded shadow-xl overflow-hidden border border-gray-200">
+                    <div class="max-h-60 overflow-y-auto custom-scroll">
+                        <a href="classes/class1.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 1</a>
+                        <a href="classes/class2.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 2</a>
+                        <a href="classes/class3.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 3</a>
+                        <a href="classes/class4.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 4</a>
+                        <a href="classes/class5.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 5</a>
+                        <a href="classes/class6.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition border-t">Class 6</a>
+                        <a href="classes/class7.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 7</a>
+                        <a href="classes/class8.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 8</a>
+                        <a href="classes/class9.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition border-t">Class 9</a>
+                        <a href="classes/class10.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 10</a>
+                        <a href="classes/class11.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 11</a>
+                        <a href="classes/class12.html" class="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Class 12</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="professional.html" class="hover:underline py-1">Accounting</a>
+        <a href="competitive.html" class="hover:underline py-1">Competitive</a>
     </div>
-</div>            <a href="professional.html" class="hover:underline">Accounting</a>
+</nav>
+
+<style>
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+</style>        <a href="professional.html" class="hover:underline">Accounting</a>
             <a href="competitive.html" class="hover:underline">Competitive</a>
         </div>
     </nav>
