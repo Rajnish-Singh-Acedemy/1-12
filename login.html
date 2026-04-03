@@ -36,44 +36,41 @@
     </div>
 
     <script>
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-  authDomain: "rdx-singh-acedemy.firebaseapp.com",
-  projectId: "rdx-singh-acedemy",
-  storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-  messagingSenderId: "833608207106",
-  appId: "1:833608207106:web:88c09aee29ed5eff28101b",
-  measurementId: "G-EYWXXZBKBP"
-};
-        };
-        firebase.initializeApp(firebaseConfig);
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+        authDomain: "rdx-singh-acedemy.firebaseapp.com",
+        projectId: "rdx-singh-acedemy",
+        storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+        messagingSenderId: "833608207106",
+        appId: "1:833608207106:web:88c09aee29ed5eff28101b",
+        measurementId: "G-EYWXXZBKBP"
+    }; // Yahan extra bracket hataya gaya hai
 
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-        document.getElementById('signupForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const pass = document.getElementById('userPass').value;
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+        const pass = document.getElementById('userPass').value;
 
-            auth.createUserWithEmailAndPassword(email, pass)
-            .then((userCredential) => {
-                // User info Firestore mein save karein
-                return db.collection("students").doc(userCredential.user.uid).set({
-                    fullName: name,
-                    email: email,
-                    isPaid: false, // Shuruat mein false rahega
-                    joinedDate: new Date()
-                });
-            })
-            .then(() => {
-                alert("Account Created! Now complete the payment.");
-                window.location.href = "payment.html";
-            })
-            .catch((error) => alert(error.message));
-        });
-    </script>
+        auth.createUserWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+            return db.collection("students").doc(userCredential.user.uid).set({
+                fullName: name,
+                email: email,
+                isPaid: false,
+                joinedDate: new Date()
+            });
+        })
+        .then(() => {
+            alert("Account Created! Redirecting to Payment...");
+            window.location.href = "payment.html"; // Make sure payment.html exists
+        })
+        .catch((error) => alert("Error: " + error.message));
+    });
+</script>
 </body>
 </html>
