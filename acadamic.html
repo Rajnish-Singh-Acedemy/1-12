@@ -1,77 +1,148 @@
-<body class="bg-gray-100">
-    <div class="max-w-5xl mx-auto py-10 px-4">
-        <h2 class="text-3xl font-bold mb-6 text-center text-blue-700">Academic Courses & Fees Structure</h2>
-        
-        <div class="overflow-x-auto bg-white rounded-xl shadow-xl border border-gray-200">
-            <table class="w-full text-left border-collapse">
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Courses & Fees | RDX Singh Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .grade-row:hover { transform: scale(1.01); transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <nav class="bg-white border-b sticky top-0 z-50 py-3">
+        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 text-white p-2 rounded-lg font-bold">RDX</div>
+                <span class="text-xl font-extrabold tracking-tight text-slate-800">Singh Academy</span>
+            </div>
+            <a href="index.html" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto py-16 px-4">
+        <div class="text-center mb-16">
+            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Admission 2026-27</span>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 mt-4 mb-6">Simple & Transparent <span class="text-blue-600">Pricing</span></h1>
+            <p class="text-slate-600 max-w-2xl mx-auto text-lg">Quality education ab har kisi ke liye affordable hai. Niche di gayi list se apni class select karein.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-2xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+            <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-gray-800 text-white">
-                        <th class="p-4">Class</th>
-                        <th class="p-4">Subject Selection</th>
-                        <th class="p-4">Fees (Monthly)</th>
-                        <th class="p-4 text-center">Action</th>
+                    <tr class="bg-slate-900 text-white">
+                        <th class="py-6 px-8 font-bold text-sm uppercase tracking-widest">Target Class</th>
+                        <th class="py-6 px-8 font-bold text-sm uppercase tracking-widest">Program Details</th>
+                        <th class="py-6 px-8 font-bold text-sm uppercase tracking-widest">Monthly Investment</th>
+                        <th class="py-6 px-8 text-center font-bold text-sm uppercase tracking-widest">Enrollment</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-700">
-                    <tr class="border-b hover:bg-blue-50 transition">
-                        <td class="p-4 font-semibold">Class 1 to 5</td>
-                        <td class="p-4">All Subjects (All-in-one)</td>
-                        <td class="p-4 text-green-600 font-bold">₹499</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class1.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
-                        </td>
-                    </tr>
+                <tbody class="divide-y divide-slate-100">
                     
-                    <tr class="border-b hover:bg-blue-50 transition">
-                        <td class="p-4 font-semibold">Class 6 to 8</td>
-                        <td class="p-4">Maths, Science, English</td>
-                        <td class="p-4 text-green-600 font-bold">₹699</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class6.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
+                    <tr class="grade-row group">
+                        <td class="py-8 px-8">
+                            <span class="text-xl font-bold text-slate-800 block">Class 1 to 5</span>
+                            <span class="text-xs text-slate-400 font-medium italic">Primary Wing</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <p class="text-slate-600 font-medium">All Subjects (Holistic Learning)</p>
+                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded mt-1 inline-block">Daily Homework Help</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-black text-slate-900">₹499</span>
+                                <span class="text-slate-400 text-sm font-medium">/mo</span>
+                            </div>
+                        </td>
+                        <td class="py-8 px-8 text-center">
+                            <a href="classes/class1.html" class="inline-block bg-slate-50 text-blue-600 font-bold px-6 py-2.5 rounded-xl border border-blue-100 hover:bg-blue-600 hover:text-white transition-all">View Program</a>
                         </td>
                     </tr>
 
-                    <tr class="border-b hover:bg-blue-50 transition">
-                        <td class="p-4 font-semibold">Class 9</td>
-                        <td class="p-4">All Main Subjects</td>
-                        <td class="p-4 text-green-600 font-bold">₹899</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class9.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
+                    <tr class="grade-row group bg-slate-50/30">
+                        <td class="py-8 px-8">
+                            <span class="text-xl font-bold text-slate-800 block">Class 6 to 8</span>
+                            <span class="text-xs text-slate-400 font-medium italic">Middle Wing</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <p class="text-slate-600 font-medium">Maths + Science + English</p>
+                            <span class="text-[10px] bg-blue-50 text-blue-500 px-2 py-0.5 rounded mt-1 inline-block">Conceptual Clarity</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-black text-slate-900">₹699</span>
+                                <span class="text-slate-400 text-sm font-medium">/mo</span>
+                            </div>
+                        </td>
+                        <td class="py-8 px-8 text-center">
+                            <a href="classes/class6.html" class="inline-block bg-slate-50 text-blue-600 font-bold px-6 py-2.5 rounded-xl border border-blue-100 hover:bg-blue-600 hover:text-white transition-all">View Program</a>
                         </td>
                     </tr>
 
-                    <tr class="border-b bg-yellow-50 hover:bg-yellow-100 transition">
-                        <td class="p-4 font-bold text-blue-800">Class 10</td>
-                        <td class="p-4 italic">Full Course (Board Prep)</td>
-                        <td class="p-4 text-red-600 font-extrabold uppercase">FREE (Launch Offer)</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class10.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
+                    <tr class="grade-row bg-blue-50/50 border-y-2 border-blue-100 relative">
+                        <td class="py-8 px-8">
+                            <div class="absolute top-0 left-8 transform -translate-y-1/2 bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg">Most Popular</div>
+                            <span class="text-xl font-black text-blue-800 block">Class 10</span>
+                            <span class="text-xs text-blue-400 font-bold italic">Board Special</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <p class="text-slate-700 font-bold italic underline decoration-blue-200">Full Board Preparation Course</p>
+                            <span class="text-[10px] bg-white text-blue-600 border border-blue-100 px-2 py-0.5 rounded mt-1 inline-block">Mock Tests Included</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <span class="text-2xl font-black text-red-600">FREE</span>
+                            <span class="block text-[10px] text-slate-400 line-through font-bold">Was ₹999</span>
+                        </td>
+                        <td class="py-8 px-8 text-center">
+                            <a href="classes/class10.html" class="inline-block bg-blue-600 text-white font-bold px-8 py-3 rounded-xl shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all">Join Free Now</a>
                         </td>
                     </tr>
 
-                    <tr class="border-b hover:bg-blue-50 transition">
-                        <td class="p-4 font-semibold">Class 11</td>
-                        <td class="p-4">Commerce / Arts / Science</td>
-                        <td class="p-4 text-green-600 font-bold">₹1199</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class11.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
+                    <tr class="grade-row bg-green-50/30">
+                        <td class="py-8 px-8">
+                            <span class="text-xl font-black text-green-800 block">Class 12</span>
+                            <span class="text-xs text-green-400 font-bold italic">Commerce Specialist</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <p class="text-slate-700 font-bold">Accountancy & Business Studies</p>
+                            <span class="text-[10px] bg-white text-green-600 border border-green-100 px-2 py-0.5 rounded mt-1 inline-block">Expert Guidance</span>
+                        </td>
+                        <td class="py-8 px-8">
+                            <span class="text-2xl font-black text-green-600">FREE</span>
+                        </td>
+                        <td class="py-8 px-8 text-center">
+                            <a href="classes/class12.html" class="inline-block bg-green-600 text-white font-bold px-8 py-3 rounded-xl shadow-xl shadow-green-200 hover:bg-green-700 hover:-translate-y-1 transition-all">Join Free</a>
                         </td>
                     </tr>
 
-                    <tr class="border-b bg-yellow-50 hover:bg-yellow-100 transition">
-                        <td class="p-4 font-bold text-blue-800">Class 12</td>
-                        <td class="p-4 italic">Accountancy / Business Studies</td>
-                        <td class="p-4 text-red-600 font-extrabold uppercase">FREE</td>
-                        <td class="p-4 text-center">
-                            <a href="classes/class12.html" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition">View Details</a>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="mt-8 text-center">
-            <a href="index.html" class="text-blue-600 font-bold hover:underline">← Back to Homepage</a>
+        <div class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 p-8 bg-white rounded-3xl border border-slate-100 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-sm text-slate-500 italic max-w-md"><strong>Note:</strong> Monthly fees mein books aur examination fees include nahi hain. Admission confirmation ke liye "View Program" par click karein.</p>
+            </div>
+            <div class="flex -space-x-3">
+                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">100+</div>
+                <div class="w-10 h-10 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-600 underline">Students</div>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="py-12 border-t border-slate-100 text-center">
+        <p class="text-slate-400 text-sm">&copy; 2026 RDX Singh Academy. Built for Excellence.</p>
+    </footer>
+
 </body>
+</html>
