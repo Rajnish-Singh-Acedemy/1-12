@@ -6,8 +6,8 @@
     <title>Student Registration | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-slate-50">
 
@@ -34,30 +34,65 @@
         </form>
         <p class="text-center mt-6 text-sm text-slate-500">Already have an account? <a href="login.html" class="text-blue-600 font-bold underline">Login</a></p>
     </div>
+<script>
+    // 1. Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+        authDomain: "rdx-singh-acedemy.firebaseapp.com",
+        databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "rdx-singh-acedemy",
+        storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+        messagingSenderId: "833608207106",
+        appId: "1:833608207106:web:88c09aee29ed5eff28101b",
+        measurementId: "G-EYWXXZBKBP"
+    };
 
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    // 2. Initialize Firebase
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-    authDomain: "rdx-singh-acedemy.firebaseapp.com",
-    databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "rdx-singh-acedemy",
-    storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-    messagingSenderId: "833608207106",
-    appId: "1:833608207106:web:88c09aee29ed5eff28101b",
-    measurementId: "G-EYWXXZBKBP"
-  };
+    // 3. Login Function
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+        // Button state badalna taaki user ko lage ki kaam ho raha hai
+        const loginBtn = e.target.querySelector('button');
+        const originalText = loginBtn.innerText;
+        loginBtn.disabled = true;
+        loginBtn.innerText = "Checking Credentials...";
+
+        const email = document.getElementById('userEmail').value;
+        const pass = document.getElementById('userPass').value;
+
+        // Firebase Sign In Method
+        auth.signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+            // Success: User login ho gaya
+            alert("Login Successful! Welcome back.");
+            window.location.href = "dashboard.html"; // Yahan apne dashboard ka naam likhein
+        })
+        .catch((error) => {
+            // Error handling: Button ko wapas normal karein
+            loginBtn.disabled = false;
+            loginBtn.innerText = originalText;
+
+            // Console mein error print karein (F12 daba kar check karein)
+            console.error("Login Error:", error.code);
+
+            // User ko message dikhayein
+            if (error.code === 'auth/user-not-found') {
+                alert("Ye email register nahi hai. Pehle Signup karein.");
+            } else if (error.code === 'auth/wrong-password') {
+                alert("Galat password! Dobara koshish karein.");
+            } else if (error.code === 'auth/invalid-email') {
+                alert("Email format sahi nahi hai.");
+            } else {
+                alert("Error: " + error.message);
+            }
+        });
+    });
 </script>
 </body>
 </html>
