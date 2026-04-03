@@ -1,13 +1,21 @@
-<div class="max-w-5xl mx-auto p-6">
-    <h2 class="text-2xl font-bold mb-4">Aapka Dashboard</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-black aspect-video rounded overflow-hidden">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="p-4 bg-blue-50 border rounded">
-            <h3 class="font-bold">Live Class Timing</h3>
-            <p>Next Class: Monday, 10:00 AM</p>
-            <a href="https://meet.google.com/xyz-abc" class="inline-block mt-4 bg-green-600 text-white px-6 py-2 rounded">Join Live Class</a>
-        </div>
-    </div>
-</div>
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        db.collection("students").doc(user.uid).get().then((doc) => {
+            if (doc.exists && doc.data().isPaid === true) {
+                // Video Links Show Karein
+                document.getElementById('videoSection').innerHTML = `
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_HERE"></iframe>
+                `;
+            } else {
+                // Payment Error Dikhaein
+                document.getElementById('videoSection').innerHTML = `
+                    <div class="bg-red-50 p-6 text-red-600 rounded-xl">
+                        Aapne abhi tak fees pay nahi ki hai. Video dekhne ke liye payment karein.
+                    </div>
+                `;
+            }
+        });
+    } else {
+        window.location.href = "login.html";
+    }
+});
