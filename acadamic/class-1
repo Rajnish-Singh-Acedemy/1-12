@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDX Singh Academy | Online Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for dropdown */
+        .dropdown-scroll::-webkit-scrollbar { width: 5px; }
+        .dropdown-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
 
+    <nav class="bg-blue-700 p-4 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-tight">RDX Singh Academy</h1>
+            
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="hover:text-blue-200 transition">Home</a>
+                
+                <div class="relative group">
+                    <button class="flex items-center gap-1 hover:text-blue-200 transition py-2">
+                        Academic 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div class="absolute left-0 hidden group-hover:block bg-white text-gray-800 mt-1 rounded-xl shadow-2xl w-48 overflow-hidden border border-gray-100 z-50">
+                        <div class="max-h-64 overflow-y-auto dropdown-scroll">
+                            <a href="classes/class1.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 1</a>
+                            <a href="classes/class2.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 2</a>
+                            <a href="classes/class3.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 3</a>
+                            <a href="classes/class4.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 4</a>
+                            <a href="classes/class5.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 5</a>
+                            <a href="classes/class6.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 6</a>
+                            <a href="classes/class7.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 7</a>
+                            <a href="classes/class8.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 8</a>
+                            <a href="classes/class9.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 9</a>
+                            <a href="classes/class10.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 10</a>
+                            <a href="classes/class11.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition border-b border-gray-50">Class 11</a>
+                            <a href="classes/class12.html" class="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition">Class 12</a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="professional.html" class="hover:text-blue-200 transition">Accounting</a>
+                <a href="competitive.html" class="hover:text-blue-200 transition">Competitive</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-20 text-center bg-gradient-to-b from-blue-50 to-gray-50">
+        <h2 class="text-5xl font-black text-gray-900 mb-4">Sikho Aur Badho</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Class 1-12, Accounting, aur Competitive Exams ki taiyari ab ek hi jagah sabse behtareen tarike se.</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 pb-20">
+        <div class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2">
+            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4 font-bold text-xl">01</div>
+            <h3 class="text-2xl font-bold text-gray-800">Academic (1-12)</h3>
+            <p class="text-gray-500 my-4 leading-relaxed">Nursery se lekar Class 12 tak ke sabhi subjects ki step-by-step padhai.</p>
+            <a href="academic.html" class="inline-flex items-center text-blue-600 font-bold hover:gap-2 transition-all">
+                Explore Classes <span class="ml-2">→</span>
+            </a>
+        </div>
+
+        </main>
+</body>
+</html>
