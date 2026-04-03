@@ -1,22 +1,40 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <link rel="stylesheet" href="style.css">
-    <title>Login - RDX Singh Academy</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration | RDX Singh Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="auth-container">
-        <h2>Student Login</h2>
-        <input type="email" id="email" placeholder="Apna Email Daalein">
-        <input type="password" id="password" placeholder="Password">
-        <button class="btn-main" style="width:100%" onclick="handleAuth()">Login / Sign Up</button>
-        <p id="msg" style="color: red;"></p>
+<body class="bg-slate-100">
+    <div class="max-w-md mx-auto my-10 bg-white p-8 rounded-2xl shadow-2xl border border-slate-200">
+        <h2 class="text-3xl font-black text-center text-blue-600 mb-6">Create Account</h2>
+        <form id="registrationForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Student Name</label>
+                <input type="text" id="name" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Email Address</label>
+                <input type="email" id="email" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700">Create Password</label>
+                <input type="password" id="password" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                Register & Pay Now
+            </button>
+        </form>
     </div>
 
-   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-<script src="script.js"></script>
+    <script>
+        document.getElementById('registrationForm').onsubmit = function(e) {
+            e.preventDefault();
+            // Data save logic yahan aayega
+            alert("Registration Successful! Redirecting to Payment...");
+            window.location.href = "payment.html"; // Agla step
+        };
+    </script>
 </body>
 </html>
