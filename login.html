@@ -35,42 +35,29 @@
         <p class="text-center mt-6 text-sm text-slate-500">Already have an account? <a href="login.html" class="text-blue-600 font-bold underline">Login</a></p>
     </div>
 
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-        authDomain: "rdx-singh-acedemy.firebaseapp.com",
-        projectId: "rdx-singh-acedemy",
-        storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-        messagingSenderId: "833608207106",
-        appId: "1:833608207106:web:88c09aee29ed5eff28101b",
-        measurementId: "G-EYWXXZBKBP"
-    }; // Yahan extra bracket hataya gaya hai
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+    authDomain: "rdx-singh-acedemy.firebaseapp.com",
+    databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "rdx-singh-acedemy",
+    storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+    messagingSenderId: "833608207106",
+    appId: "1:833608207106:web:88c09aee29ed5eff28101b",
+    measurementId: "G-EYWXXZBKBP"
+  };
 
-    document.getElementById('signupForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('userName').value;
-        const email = document.getElementById('userEmail').value;
-        const pass = document.getElementById('userPass').value;
-
-        auth.createUserWithEmailAndPassword(email, pass)
-        .then((userCredential) => {
-            return db.collection("students").doc(userCredential.user.uid).set({
-                fullName: name,
-                email: email,
-                isPaid: false,
-                joinedDate: new Date()
-            });
-        })
-        .then(() => {
-            alert("Account Created! Redirecting to Payment...");
-            window.location.href = "payment.html"; // Make sure payment.html exists
-        })
-        .catch((error) => alert("Error: " + error.message));
-    });
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 </script>
 </body>
 </html>
