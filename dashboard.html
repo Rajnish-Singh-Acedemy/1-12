@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="application/javascript" src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/SqlJsT37090801680699.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -37,24 +37,26 @@
                 <h3 class="text-xl font-bold text-gray-800">Course Access Locked</h3>
                 <p class="text-gray-600 mt-2 mb-6">Padhai shuru karne ke liye fees jama karein.</p>
                 
-                <button onclick="openPaytmWidget()" id="paytmBtn" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105">
-                    Pay with Paytm & Unlock Course
+                <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
+                    Pay Fees & Unlock Course
                 </button>
 
-                <div class="mt-4 flex justify-center gap-4 grayscale opacity-50">
+                <div class="mt-6 flex justify-center gap-6 grayscale opacity-60">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" class="h-6">
-                    <img src="https://staticproxy.paytm.com/gandalf/63035560_1.png" class="h-6" alt="Paytm"> 
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-6">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Visa_Logo_2021.svg" class="h-4">
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Dashboard Config
+        // Dashboard Initialization
         const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
         document.getElementById('className').innerText = selectedCourse;
 
-        // Firebase Auth Logic
+        // Firebase Auth & Firestore Logic
+        // Dhyaan dein: Firebase SDK scripts is file se pehle load honi chahiye.
         auth.onAuthStateChanged((user) => {
             if (user) {
                 db.collection("students").doc(user.uid).get().then((doc) => {
@@ -65,7 +67,7 @@
                     } else {
                         document.getElementById('paymentSection').classList.remove('hidden');
                     }
-                });
+                }).catch(err => console.error("Error fetching student data:", err));
             } else {
                 window.location.href = "login.html";
             }
@@ -73,53 +75,66 @@
 
         function showCourseContent() {
             document.getElementById('videoSection').classList.remove('hidden');
+            document.getElementById('paymentSection').classList.add('hidden');
+            // Yahan apna video ID badlein
             document.getElementById('courseVideo').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID"; 
         }
 
-        // --- Paytm Integration Logic ---
-        
-        async function openPaytmWidget() {
-            const userId = auth.currentUser.uid;
-            const orderId = "ORDERID_" + Date.now();
-            const amount = "500.00"; // Amount in Rupees
+        // --- Razorpay Payment Integration ---
+        function payWithRazorpay() {
+            const user = auth.currentUser;
+            if (!user) return alert("Please login first!");
 
-            // NOTE: "txnToken" backend se hi generate hota hai security ke liye.
-            // Agar aap Firebase use kar rahe hain, toh aapko ek 'Cloud Function' likhna hoga 
-            // jo Paytm API ko call karke token de sake.
-            
-            // Abhi ke liye hum implementation structure dikha rahe hain:
-            const config = {
-                "root": "",
-                "flow": "DEFAULT",
-                "data": {
-                    "orderId": orderId,
-                    "token": "FAdFxe46443447130754", // Ye token server se aayega
-                    "tokenType": "TXN_TOKEN",
-                    "amount": amount
+            const options = {
+                "key": "rzp_test_SZMzAPsPFmvpes", // Aapki Test API Key
+                "amount": 50000, // Rs 500 (Amount paise mein hota hai: 500 * 100)
+                "currency": "INR",
+                "name": "RDX Singh Academy",
+                "description": "Fees for " + selectedCourse,
+                "image": "https://your-logo-url.com/logo.png", // Optional: Academy Logo
+                "handler": function (response) {
+                    // Payment success hone par Firestore update karein
+                    handlePaymentSuccess(response.razorpay_payment_id);
                 },
-                "handler": {
-                    "notifyMerchant": function(eventName, data) {
-                        console.log("notifyMerchant event => ", eventName, data);
-                    }
+                "prefill": {
+                    "name": user.displayName || "Student",
+                    "email": user.email || ""
+                },
+                "theme": {
+                    "color": "#2563eb" // Blue color matching your theme
                 }
             };
 
-            if (window.Paytm && window.Paytm.CheckoutJS) {
-                window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
-                    window.Paytm.CheckoutJS.invoke();
-                }).catch(function onError(error) {
-                    console.log("Paytm Error: ", error);
-                });
-            }
+            const rzp1 = new Razorpay(options);
+            
+            rzp1.on('payment.failed', function (response){
+                alert("Payment Failed: " + response.error.description);
+            });
+
+            rzp1.open();
+        }
+
+        // Firestore mein entry save karne ka function
+        function handlePaymentSuccess(paymentId) {
+            const userId = auth.currentUser.uid;
+            
+            db.collection("students").doc(userId).set({
+                isPaid: true,
+                razorpay_payment_id: paymentId,
+                courseName: selectedCourse,
+                paidAt: new Date().toISOString()
+            }, { merge: true }).then(() => {
+                alert("Payment Successful! Your course is now unlocked.");
+                location.reload(); // Page refresh karke video dikhayega
+            }).catch((error) => {
+                console.error("Error updating Firestore:", error);
+                alert("Payment successful but database update failed. Please contact support.");
+            });
         }
 
         function logout() {
             auth.signOut().then(() => { window.location.href = "login.html"; });
         }
-        function openPaytmWidget() {
-    // Apne Paytm Dashboard se banaya hua link yahan dalein
-    window.location.href = "https://p-y.tm/FAdFxe46443447130754"; 
-}
     </script>
 </body>
 </html>
