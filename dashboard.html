@@ -93,7 +93,7 @@
                 "flow": "DEFAULT",
                 "data": {
                     "orderId": orderId,
-                    "token": "YOUR_GENERATED_TXN_TOKEN", // Ye token server se aayega
+                    "token": "FAdFxe46443447130754", // Ye token server se aayega
                     "tokenType": "TXN_TOKEN",
                     "amount": amount
                 },
@@ -116,6 +116,10 @@
         function logout() {
             auth.signOut().then(() => { window.location.href = "login.html"; });
         }
+        function openPaytmWidget() {
+    // Apne Paytm Dashboard se banaya hua link yahan dalein
+    window.location.href = "https://p-y.tm/FAdFxe46443447130754"; 
+}
     </script>
 </body>
 </html>
