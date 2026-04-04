@@ -132,6 +132,45 @@
         function logout() {
             auth.signOut().then(() => { window.location.href = "login.html"; });
         }
+
+        <div id="contentDisplay" class="hidden mt-6 bg-white p-6 rounded-2xl shadow-md">
+    <h3 id="chapterTitle" class="text-xl font-bold mb-4 text-blue-600">Chapter Title</h3>
+    
+    <div class="aspect-video bg-black rounded-xl overflow-hidden mb-6">
+        <iframe id="videoPlayer" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="flex gap-4">
+        <a id="notesLink" href="#" target="_blank" class="flex-1 bg-green-600 text-white text-center py-3 rounded-xl font-bold">
+            Download Notes (PDF)
+        </a>
+        <button onclick="goBackToChapters()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold">
+            Back to Chapters
+        </button>
+    </div>
+</div>
+
+        async function openChapter(className, subjectName, chapterID) {
+    // Firebase se specific chapter ka data lena
+    const doc = await db.collection("content")
+                        .doc(className)
+                        .collection("Subjects")
+                        .doc(subjectName)
+                        .collection("Chapters")
+                        .doc(chapterID).get();
+
+    if (doc.exists) {
+        const data = doc.data();
+        
+        // UI Update karna
+        document.getElementById('subjectSection').classList.add('hidden');
+        document.getElementById('contentDisplay').classList.remove('hidden');
+        
+        document.getElementById('chapterTitle').innerText = data.title;
+        document.getElementById('videoPlayer').src = data.videoUrl;
+        document.getElementById('notesLink').href = data.notesUrl;
+    }
+}
     </script>
 </body>
 </html>
