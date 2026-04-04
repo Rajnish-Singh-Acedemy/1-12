@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -20,12 +21,15 @@
 
     <div class="max-w-4xl mx-auto mt-10 px-4">
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
-            <h2 class="text-2xl font-bold text-gray-800" id="welcomeMsg">Namaste Student!</h2>
+            <h2 class="text-2xl font-bold text-gray-800" id="welcomeMsg">Namaste!</h2>
             <p class="text-gray-500" id="courseInfo">Aapne <span class="font-bold text-blue-600" id="className">...</span> ke liye login kiya hai.</p>
         </div>
 
         <div id="mainSection" class="grid gap-6">
-            <div id="loader" class="text-center py-10 text-gray-400">Loading your dashboard...</div>
+            <div id="loader" class="text-center py-10 text-gray-500 flex flex-col items-center">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-2"></div>
+                Checking your account...
+            </div>
             
             <div id="videoSection" class="hidden">
                 <h3 class="text-lg font-bold mb-4">Aapki Classes</h3>
@@ -36,10 +40,12 @@
 
             <div id="paymentSection" class="hidden bg-blue-50 border border-blue-100 p-8 rounded-2xl text-center">
                 <div class="mb-4 inline-block p-4 bg-blue-100 rounded-full">
-                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold text-gray-800">Course Access Locked</h3>
-                <p class="text-gray-600 mt-2 mb-6">Padhai shuru karne ke liye fees jama karein.</p>
+                <p class="text-gray-600 mt-2 mb-6">Aapne is course ki fees abhi tak jama nahi ki hai.</p>
                 
                 <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
                     Pay Fees & Unlock Course
@@ -49,40 +55,48 @@
     </div>
 
     <script>
-        // 1. Firebase Configuration
+        // 1. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
             authDomain: "rdx-singh-acedemy.firebaseapp.com",
-            databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "rdx-singh-acedemy",
             storageBucket: "rdx-singh-acedemy.firebasestorage.app",
             messagingSenderId: "833608207106",
             appId: "1:833608207106:web:88c09aee29ed5eff28101b"
         };
 
-        // 2. Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        // 2. Initialize
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Course Name from Session
         const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
         document.getElementById('className').innerText = selectedCourse;
 
-        // 3. Auth State Observer
+        // 3. Check User Status
         auth.onAuthStateChanged((user) => {
             if (user) {
+                console.log("User logged in:", user.email);
+                document.getElementById('welcomeMsg').innerText = "Namaste " + (user.displayName || "Student") + "!";
+                
+                // Firestore se check karein payment hui ya nahi
                 db.collection("students").doc(user.uid).get().then((doc) => {
                     document.getElementById('loader').classList.add('hidden');
+                    
                     if (doc.exists && doc.data().isPaid) {
                         showCourseContent();
                     } else {
                         document.getElementById('paymentSection').classList.remove('hidden');
                     }
                 }).catch(err => {
-                    console.error("Error fetching student data:", err);
-                    document.getElementById('loader').innerText = "Error loading data.";
+                    console.error("Firestore Error:", err);
+                    alert("Database load nahi ho raha. Check Firestore Rules!");
                 });
             } else {
+                console.log("No user found, redirecting...");
                 window.location.href = "login.html";
             }
         });
@@ -90,21 +104,21 @@
         function showCourseContent() {
             document.getElementById('videoSection').classList.remove('hidden');
             document.getElementById('paymentSection').classList.add('hidden');
-            // Testing ke liye ek sample video ID
+            // Sample Video ID (Change it to yours)
             document.getElementById('courseVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; 
         }
 
-        // 4. Razorpay Function
+        // 4. Razorpay Integration
         function payWithRazorpay() {
             const user = auth.currentUser;
             if (!user) return alert("Please login first!");
 
             const options = {
                 "key": "rzp_test_SZMzAPsPFmvpes", 
-                "amount": 50000, // Rs 500
+                "amount": 50000, // 500 * 100 paise
                 "currency": "INR",
                 "name": "RDX Singh Academy",
-                "description": "Fees for " + selectedCourse,
+                "description": "Course: " + selectedCourse,
                 "handler": function (response) {
                     handlePaymentSuccess(response.razorpay_payment_id);
                 },
@@ -120,15 +134,19 @@
         }
 
         function handlePaymentSuccess(paymentId) {
-            const userId = auth.currentUser.uid;
-            db.collection("students").doc(userId).set({
+            const user = auth.currentUser;
+            db.collection("students").doc(user.uid).set({
                 isPaid: true,
-                razorpay_payment_id: paymentId,
-                courseName: selectedCourse,
-                paidAt: firebase.firestore.FieldValue.serverTimestamp()
+                paymentId: paymentId,
+                course: selectedCourse,
+                email: user.email,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }).then(() => {
-                alert("Payment Successful!");
+                alert("Payment Successful! Course unlocked.");
                 location.reload();
+            }).catch(e => {
+                console.error("Success update failed:", e);
+                alert("Payment done but Database not updated. Contact Support.");
             });
         }
 
