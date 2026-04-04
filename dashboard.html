@@ -1,21 +1,105 @@
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        db.collection("students").doc(user.uid).get().then((doc) => {
-            if (doc.exists && doc.data().isPaid === true) {
-                // Video Links Show Karein
-                document.getElementById('videoSection').innerHTML = `
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_HERE"></iframe>
-                `;
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | RDX Singh Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold text-blue-600">RDX Singh Academy</h1>
+        <button onclick="logout()" class="text-red-500 font-medium">Logout</button>
+    </nav>
+
+    <div class="max-w-4xl mx-auto mt-10 px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-800" id="welcomeMsg">Namaste Student!</h2>
+            <p class="text-gray-500" id="courseInfo">Aapne <span class="font-bold text-blue-600" id="className">...</span> ke liye login kiya hai.</p>
+        </div>
+
+        <div id="mainSection" class="grid gap-6">
+            <div id="loader" class="text-center py-10 text-gray-400">Loading your dashboard...</div>
+            
+            <div id="videoSection" class="hidden">
+                <h3 class="text-lg font-bold mb-4">Aapki Classes</h3>
+                <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+                    <iframe id="courseVideo" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div id="paymentSection" class="hidden bg-blue-50 border border-blue-100 p-8 rounded-2xl text-center">
+                <div class="mb-4 inline-block p-4 bg-blue-100 rounded-full">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">Course Access Locked</h3>
+                <p class="text-gray-600 mt-2 mb-6">Padhai shuru karne ke liye fees jama karein.</p>
+                <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105">
+                    Pay Fees & Unlock Course
+                </button>
+                <div class="mt-4 flex justify-center gap-4 grayscale opacity-50">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" class="h-6">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-6"> </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dashboard Logic
+        const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
+        document.getElementById('className').innerText = selectedCourse;
+
+        // Firebase Auth State
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                db.collection("students").doc(user.uid).get().then((doc) => {
+                    document.getElementById('loader').classList.add('hidden');
+                    
+                    if (doc.exists && doc.data().isPaid) {
+                        // Paid Student
+                        showCourseContent();
+                    } else {
+                        // Unpaid Student
+                        document.getElementById('paymentSection').classList.remove('hidden');
+                    }
+                });
             } else {
-                // Payment Error Dikhaein
-                document.getElementById('videoSection').innerHTML = `
-                    <div class="bg-red-50 p-6 text-red-600 rounded-xl">
-                        Aapne abhi tak fees pay nahi ki hai. Video dekhne ke liye payment karein.
-                    </div>
-                `;
+                window.location.href = "login.html";
             }
         });
-    } else {
-        window.location.href = "login.html";
-    }
-});
+
+        function showCourseContent() {
+            document.getElementById('videoSection').classList.remove('hidden');
+            document.getElementById('courseVideo').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID"; 
+        }
+
+        // Razorpay Integration
+        function payWithRazorpay() {
+            var options = {
+                "key": "YOUR_RAZORPAY_KEY_ID", // Yahan apni Razorpay ID daalein
+                "amount": "50000", // 500.00 (Paise mein hota hai)
+                "currency": "INR",
+                "name": "RDX Singh Academy",
+                "description": "Fees for " + selectedCourse,
+                "handler": function (response){
+                    // Payment success hone par Firestore update karein
+                    const userId = auth.currentUser.uid;
+                    db.collection("students").doc(userId).set({
+                        isPaid: true,
+                        paymentId: response.razorpay_payment_id,
+                        course: selectedCourse
+                    }, { merge: true }).then(() => {
+                        alert("Payment Successful! Course Unlocked.");
+                        location.reload();
+                    });
+                },
+                "theme": { "color": "#2563eb" }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+    </script>
+</body>
+</html>
