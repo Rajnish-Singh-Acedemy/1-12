@@ -6,6 +6,10 @@
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -40,34 +44,44 @@
                 <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
                     Pay Fees & Unlock Course
                 </button>
-
-                <div class="mt-6 flex justify-center gap-6 grayscale opacity-60">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" class="h-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Visa_Logo_2021.svg" class="h-4">
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Dashboard Initialization
+        // 1. Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+
+        // 2. Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
         const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
         document.getElementById('className').innerText = selectedCourse;
 
-        // Firebase Auth & Firestore Logic
-        // Dhyaan dein: Firebase SDK scripts is file se pehle load honi chahiye.
+        // 3. Auth State Observer
         auth.onAuthStateChanged((user) => {
             if (user) {
                 db.collection("students").doc(user.uid).get().then((doc) => {
                     document.getElementById('loader').classList.add('hidden');
-                    
                     if (doc.exists && doc.data().isPaid) {
                         showCourseContent();
                     } else {
                         document.getElementById('paymentSection').classList.remove('hidden');
                     }
-                }).catch(err => console.error("Error fetching student data:", err));
+                }).catch(err => {
+                    console.error("Error fetching student data:", err);
+                    document.getElementById('loader').innerText = "Error loading data.";
+                });
             } else {
                 window.location.href = "login.html";
             }
@@ -76,93 +90,51 @@
         function showCourseContent() {
             document.getElementById('videoSection').classList.remove('hidden');
             document.getElementById('paymentSection').classList.add('hidden');
-            // Yahan apna video ID badlein
-            document.getElementById('courseVideo').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID"; 
+            // Testing ke liye ek sample video ID
+            document.getElementById('courseVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; 
         }
 
-        // --- Razorpay Payment Integration ---
+        // 4. Razorpay Function
         function payWithRazorpay() {
             const user = auth.currentUser;
             if (!user) return alert("Please login first!");
 
             const options = {
-                "key": "rzp_test_SZMzAPsPFmvpes", // Aapki Test API Key
-                "amount": 50000, // Rs 500 (Amount paise mein hota hai: 500 * 100)
+                "key": "rzp_test_SZMzAPsPFmvpes", 
+                "amount": 50000, // Rs 500
                 "currency": "INR",
                 "name": "RDX Singh Academy",
                 "description": "Fees for " + selectedCourse,
-                "image": "https://your-logo-url.com/logo.png", // Optional: Academy Logo
                 "handler": function (response) {
-                    // Payment success hone par Firestore update karein
                     handlePaymentSuccess(response.razorpay_payment_id);
                 },
                 "prefill": {
                     "name": user.displayName || "Student",
                     "email": user.email || ""
                 },
-                "theme": {
-                    "color": "#2563eb" // Blue color matching your theme
-                }
+                "theme": { "color": "#2563eb" }
             };
 
             const rzp1 = new Razorpay(options);
-            
-            rzp1.on('payment.failed', function (response){
-                alert("Payment Failed: " + response.error.description);
-            });
-
             rzp1.open();
         }
 
-        // Firestore mein entry save karne ka function
         function handlePaymentSuccess(paymentId) {
             const userId = auth.currentUser.uid;
-            
             db.collection("students").doc(userId).set({
                 isPaid: true,
                 razorpay_payment_id: paymentId,
                 courseName: selectedCourse,
-                paidAt: new Date().toISOString()
+                paidAt: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true }).then(() => {
-                alert("Payment Successful! Your course is now unlocked.");
-                location.reload(); // Page refresh karke video dikhayega
-            }).catch((error) => {
-                console.error("Error updating Firestore:", error);
-                alert("Payment successful but database update failed. Please contact support.");
+                alert("Payment Successful!");
+                location.reload();
             });
         }
 
         function logout() {
             auth.signOut().then(() => { window.location.href = "login.html"; });
         }
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-    authDomain: "rdx-singh-acedemy.firebaseapp.com",
-    databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "rdx-singh-acedemy",
-    storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-    messagingSenderId: "833608207106",
-    appId: "1:833608207106:web:88c09aee29ed5eff28101b",
-    measurementId: "G-EYWXXZBKBP"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+    </script>
 </body>
 </html>
