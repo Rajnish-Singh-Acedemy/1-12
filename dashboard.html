@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="application/javascript" src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/SqlJsT37090801680699.js"></script>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -36,32 +36,33 @@
                 </div>
                 <h3 class="text-xl font-bold text-gray-800">Course Access Locked</h3>
                 <p class="text-gray-600 mt-2 mb-6">Padhai shuru karne ke liye fees jama karein.</p>
-                <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105">
-                    Pay Fees & Unlock Course
+                
+                <button onclick="openPaytmWidget()" id="paytmBtn" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105">
+                    Pay with Paytm & Unlock Course
                 </button>
+
                 <div class="mt-4 flex justify-center gap-4 grayscale opacity-50">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" class="h-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-6"> </div>
+                    <img src="https://staticproxy.paytm.com/gandalf/63035560_1.png" class="h-6" alt="Paytm"> 
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Dashboard Logic
+        // Dashboard Config
         const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
         document.getElementById('className').innerText = selectedCourse;
 
-        // Firebase Auth State
+        // Firebase Auth Logic
         auth.onAuthStateChanged((user) => {
             if (user) {
                 db.collection("students").doc(user.uid).get().then((doc) => {
                     document.getElementById('loader').classList.add('hidden');
                     
                     if (doc.exists && doc.data().isPaid) {
-                        // Paid Student
                         showCourseContent();
                     } else {
-                        // Unpaid Student
                         document.getElementById('paymentSection').classList.remove('hidden');
                     }
                 });
@@ -75,30 +76,45 @@
             document.getElementById('courseVideo').src = "https://www.youtube.com/embed/YOUR_VIDEO_ID"; 
         }
 
-        // Razorpay Integration
-        function payWithRazorpay() {
-            var options = {
-                "key": "YOUR_RAZORPAY_KEY_ID", // Yahan apni Razorpay ID daalein
-                "amount": "50000", // 500.00 (Paise mein hota hai)
-                "currency": "INR",
-                "name": "RDX Singh Academy",
-                "description": "Fees for " + selectedCourse,
-                "handler": function (response){
-                    // Payment success hone par Firestore update karein
-                    const userId = auth.currentUser.uid;
-                    db.collection("students").doc(userId).set({
-                        isPaid: true,
-                        paymentId: response.razorpay_payment_id,
-                        course: selectedCourse
-                    }, { merge: true }).then(() => {
-                        alert("Payment Successful! Course Unlocked.");
-                        location.reload();
-                    });
+        // --- Paytm Integration Logic ---
+        
+        async function openPaytmWidget() {
+            const userId = auth.currentUser.uid;
+            const orderId = "ORDERID_" + Date.now();
+            const amount = "500.00"; // Amount in Rupees
+
+            // NOTE: "txnToken" backend se hi generate hota hai security ke liye.
+            // Agar aap Firebase use kar rahe hain, toh aapko ek 'Cloud Function' likhna hoga 
+            // jo Paytm API ko call karke token de sake.
+            
+            // Abhi ke liye hum implementation structure dikha rahe hain:
+            const config = {
+                "root": "",
+                "flow": "DEFAULT",
+                "data": {
+                    "orderId": orderId,
+                    "token": "YOUR_GENERATED_TXN_TOKEN", // Ye token server se aayega
+                    "tokenType": "TXN_TOKEN",
+                    "amount": amount
                 },
-                "theme": { "color": "#2563eb" }
+                "handler": {
+                    "notifyMerchant": function(eventName, data) {
+                        console.log("notifyMerchant event => ", eventName, data);
+                    }
+                }
             };
-            var rzp1 = new Razorpay(options);
-            rzp1.open();
+
+            if (window.Paytm && window.Paytm.CheckoutJS) {
+                window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
+                    window.Paytm.CheckoutJS.invoke();
+                }).catch(function onError(error) {
+                    console.log("Paytm Error: ", error);
+                });
+            }
+        }
+
+        function logout() {
+            auth.signOut().then(() => { window.location.href = "login.html"; });
         }
     </script>
 </body>
