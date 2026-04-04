@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -20,14 +19,20 @@
 
     <div class="max-w-4xl mx-auto mt-10 px-4">
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mb-6">
-            <h2 class="text-2xl font-bold text-gray-800" id="welcomeMsg">Namaste!</h2>
-            <p class="text-gray-500" id="courseInfo">Aapne <span class="font-bold text-blue-600" id="className">...</span> ke liye login kiya hai.</p>
+            <h2 class="text-2xl font-bold text-gray-800" id="welcomeMsg">Namaste Student!</h2>
+            <p class="text-gray-500" id="courseInfo">Aapne <span class="font-bold text-blue-600" id="classNameDisplay">...</span> ke liye login kiya hai.</p>
+        </div>
+
+        <div id="subjectSection" class="hidden mb-10">
+            <h3 class="text-lg font-bold mb-4 text-gray-700">Aapke Subjects:</h3>
+            <div id="subjectsList" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                </div>
         </div>
 
         <div id="mainSection" class="grid gap-6">
             <div id="loader" class="text-center py-10 text-gray-500 flex flex-col items-center">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-2"></div>
-                Checking your account...
+                Account details check ho rahi hain...
             </div>
             
             <div id="videoSection" class="hidden">
@@ -45,8 +50,7 @@
                 </div>
                 <h3 class="text-xl font-bold text-gray-800">Course Access Locked</h3>
                 <p class="text-gray-600 mt-2 mb-6">Padhai shuru karne ke liye fees jama karein.</p>
-                
-                <button id="payButton" onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
+                <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-10 py-3 rounded-xl font-bold hover:bg-blue-700 transition transform hover:scale-105 shadow-lg">
                     Pay Fees & Unlock Course
                 </button>
             </div>
@@ -54,7 +58,6 @@
     </div>
 
     <script>
-        // 1. Firebase Config (Double check these values in your console)
         const firebaseConfig = {
             apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
             authDomain: "rdx-singh-acedemy.firebaseapp.com",
@@ -63,103 +66,67 @@
             messagingSenderId: "833608207106",
             appId: "1:833608207106:web:88c09aee29ed5eff28101b"
         };
-
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const selectedCourse = sessionStorage.getItem('selectedCourse') || "General Course";
-        document.getElementById('className').innerText = selectedCourse;
+        // Subjects Data
+        const classSubjects = {
+            "Class-1": ["Maths", "English", "Hindi", "EVS"],
+            "Class-2": ["Maths", "English", "Hindi", "General Knowledge"],
+            // Aap baki classes yahan add kar sakte hain
+        };
 
-        // 2. Auth State Check
         auth.onAuthStateChanged((user) => {
             if (user) {
-                console.log("Logged in as:", user.email);
-                checkPaymentStatus(user.uid);
+                db.collection("students").doc(user.uid).get().then((doc) => {
+                    document.getElementById('loader').classList.add('hidden');
+                    if (doc.exists) {
+                        const data = doc.data();
+                        const userClass = data.class || "General Course";
+                        
+                        document.getElementById('welcomeMsg').innerText = "Namaste " + (data.name || "Student") + "!";
+                        document.getElementById('classNameDisplay').innerText = userClass;
+
+                        // Subjects dikhayein
+                        displaySubjects(userClass);
+
+                        if (data.isPaid) {
+                            showCourseContent();
+                        } else {
+                            document.getElementById('paymentSection').classList.remove('hidden');
+                        }
+                    }
+                });
             } else {
-                console.log("No user, redirecting to login...");
                 window.location.href = "login.html";
             }
         });
 
-        function checkPaymentStatus(uid) {
-            db.collection("students").doc(uid).get()
-                .then((doc) => {
-                    document.getElementById('loader').classList.add('hidden');
-                    if (doc.exists && doc.data().isPaid) {
-                        showCourseContent();
-                    } else {
-                        document.getElementById('paymentSection').classList.remove('hidden');
-                    }
-                })
-                .catch((error) => {
-                    console.error("Firestore Error:", error);
-                    document.getElementById('loader').innerText = "Data load nahi ho raha. Permissions check karein.";
-                });
+        function displaySubjects(className) {
+            const list = document.getElementById('subjectsList');
+            const section = document.getElementById('subjectSection');
+            const subjects = classSubjects[className] || ["General Study"];
+            
+            list.innerHTML = ""; // Clear purana data
+            subjects.forEach(sub => {
+                list.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center font-bold text-blue-600">
+                        ${sub}
+                    </div>
+                `;
+            });
+            section.classList.remove('hidden');
         }
 
         function showCourseContent() {
             document.getElementById('videoSection').classList.remove('hidden');
             document.getElementById('paymentSection').classList.add('hidden');
-            // Testing ke liye sample video
             document.getElementById('courseVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; 
         }
 
-        // 3. Razorpay Function (With Error Catching)
         function payWithRazorpay() {
-            try {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert("Aap login nahi hain!");
-                    return;
-                }
-
-                console.log("Opening Razorpay for:", user.email);
-
-                const options = {
-                    "key": "rzp_test_SZMzAPsPFmvpes", 
-                    "amount": 50000, // 500 INR
-                    "currency": "INR",
-                    "name": "RDX Singh Academy",
-                    "description": "Fees for " + selectedCourse,
-                    "handler": function (response) {
-                        handlePaymentSuccess(response.razorpay_payment_id);
-                    },
-                    "prefill": {
-                        "name": user.displayName || "Student",
-                        "email": user.email || ""
-                    },
-                    "theme": { "color": "#2563eb" },
-                    "modal": {
-                        "ondismiss": function() {
-                            console.log("Checkout modal closed");
-                        }
-                    }
-                };
-
-                const rzp1 = new Razorpay(options);
-                rzp1.open();
-                
-            } catch (err) {
-                console.error("Razorpay Modal Error:", err);
-                alert("Payment window nahi khul rahi. Console check karein.");
-            }
-        }
-
-        function handlePaymentSuccess(paymentId) {
-            const user = auth.currentUser;
-            db.collection("students").doc(user.uid).set({
-                isPaid: true,
-                paymentId: paymentId,
-                course: selectedCourse,
-                paidAt: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true }).then(() => {
-                alert("Payment Success! Course unlocked.");
-                location.reload();
-            });
+            // ... (Aapka purana Razorpay code yahan rahega)
         }
 
         function logout() {
