@@ -96,3 +96,15 @@
 </script>
 </body>
 </html>
+
+// 1. URL se class name nikalne ka function
+const urlParams = new URLSearchParams(window.location.search);
+const selectedClass = urlParams.get('class') || 'General'; 
+
+// 2. Login successful hone par
+auth.signInWithEmailAndPassword(email, pass)
+.then((userCredential) => {
+    // Session storage mein class save kar dein taaki dashboard par kaam aaye
+    sessionStorage.setItem('selectedCourse', selectedClass);
+    window.location.href = "dashboard.html"; 
+})
