@@ -98,15 +98,23 @@
         let currentSubject = "";
 
         auth.onAuthStateChanged((user) => {
-            if (user) {
-                db.collection("students").doc(user.uid).get().then((doc) => {
-                    document.getElementById('loader').classList.add('hidden');
-                    if (doc.exists) {
-                        const data = doc.data();
-                        currentClass = data.class || "General Course";
-                        
-                        document.getElementById('welcomeMsg').innerText = "Namaste " + (data.name || "Student") + "!";
-                        document.getElementById('classNameDisplay').innerText = currentClass;
+    if (user) {
+        db.collection("students").doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                
+                // Debugging ke liye console check karein
+                console.log("Student Class from DB:", data.class);
+                
+                // Firestore se aane wali exact value use karein
+                currentClass = data.class; 
+
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('welcomeMsg').innerText = "Namaste " + (data.name || "Student") + "!";
+                document.getElementById('classNameDisplay').innerText = currentClass;
+
+                // Subjects dikhane wali function
+                displaySubjects(currentClass);
 
                         // Check Live Link
                         if (data.isPaid && data.liveLink) {
