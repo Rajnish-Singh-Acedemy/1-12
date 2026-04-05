@@ -88,11 +88,11 @@
 
         // Subjects Mapping
         const classSubjects = {
-            "Class-1": ["Maths", "English", "Hindi", "EVS"],
-            "Class-2": ["Maths", "English", "Hindi", "GK"],
-            "Class-10": ["Maths", "Science", "Social Science", "English"],
-            "Accounting": ["GST", "Income Tax", "Tally Prime", "Auditing"]
-        };
+    "Class-1": ["Maths", "English", "Hindi", "EVS"], // Spelling exact "Class-1" rakhein
+    "Class-2": ["Maths", "English", "Hindi", "GK"],
+    "Class-10": ["Maths", "Science", "Social Science", "English"],
+    "Accounting": ["GST", "Income Tax", "Tally Prime", "Auditing"]
+};
 
         let currentClass = "";
         let currentSubject = "";
@@ -148,7 +148,7 @@
             document.getElementById('contentDisplay').classList.add('hidden');
             section.classList.remove('hidden');
 
-            const subjects = classSubjects[className] || ["General Study"];
+            const subjects = classSubjects[className] || [" "];
             
             list.innerHTML = ""; 
             subjects.forEach(sub => {
