@@ -4,216 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | RDX Singh Academy</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
+<body class="bg-gray-100 min-h-screen">
 
-<body class="bg-gray-100 font-sans">
+    <nav class="bg-blue-700 p-4 text-white shadow-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">RDX Singh Academy</h1>
+            <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded text-sm">Logout</button>
+        </div>
+    </nav>
 
-<nav class="bg-blue-600 p-4 flex justify-between text-white">
-    <h1 class="text-xl font-bold">RDX Singh Academy</h1>
-    <button onclick="logout()" class="bg-red-500 px-4 py-1 rounded">Logout</button>
-</nav>
+    <main class="max-w-6xl mx-auto py-10 px-4">
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm">
+            <h2 class="text-2xl font-bold text-gray-800">Namaste, <span id="studentName">Student</span>!</h2>
+            <p id="classInfo" class="text-blue-600 font-medium">Loading your profile...</p>
+        </div>
 
-<div class="max-w-4xl mx-auto mt-6 px-4 pb-20">
-
-    <div class="bg-white p-6 rounded mb-6">
-        <h2 class="text-2xl font-bold" id="welcomeMsg">Namaste Student!</h2>
-        <p>Aapne <span id="classNameDisplay">...</span> ke liye login kiya hai.</p>
-    </div>
-
-    <div id="liveClassSection" class="hidden mb-6">
-        <a id="liveMeetLink" href="#" target="_blank"
-           class="block bg-red-600 text-white text-center p-3 rounded font-bold animate-pulse">
-           🔴 Join Live Class
-        </a>
-    </div>
-
-    <div id="loader" class="text-center py-10">Loading...</div>
-
-    <div id="subjectSection" class="hidden mb-6">
-        <h3 class="text-lg font-bold mb-4" id="sectionHeading">Subjects:</h3>
-        <div id="subjectsList" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-    </div>
-
-    <div id="contentDisplay" class="hidden bg-white p-6 rounded">
-        <button onclick="goBackToChapters()">⬅ Back</button>
-        <h3 id="chapterTitle" class="text-xl font-bold mb-4"></h3>
-
-        <iframe id="videoPlayer" width="100%" height="300"></iframe>
-
-        <a id="notesLink" href="#" target="_blank"
-           class="block mt-4 bg-green-600 text-white text-center p-2 rounded">
-           Download Notes
-        </a>
-    </div>
-
-    <div id="paymentSection" class="hidden text-center bg-blue-100 p-6 rounded">
-        <h3 class="text-xl font-bold">Course Locked</h3>
-        <button onclick="payWithRazorpay()" class="bg-blue-600 text-white px-6 py-2 mt-4 rounded">
-            Pay Now
-        </button>
-    </div>
-
-</div>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "rdx-singh-acedemy.firebaseapp.com",
-    projectId: "rdx-singh-acedemy"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// ✅ SUBJECT MAPPING FIX
-const classSubjects = {
-    "Class-1": ["Maths", "English", "Hindi", "EVS"],
-    "Class-2": ["Maths", "English", "Hindi", "GK"],
-    "Class-3": ["Maths", "Science", "Social Science", "English"],
-    "Accounting": ["GST", "Income Tax", "Tally Prime", "Auditing"]
-};
-
-let currentClass = "";
-let currentSubject = "";
-
-// ✅ SINGLE AUTH LISTENER
-auth.onAuthStateChanged(async (user) => {
-
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    try {
-        const doc = await db.collection("students").doc(user.uid).get();
-
-        if (!doc.exists) {
-            alert("Student data not found");
-            return;
-        }
-
-        const data = doc.data();
-
-        // 🔥 MAIN FIX
-        currentClass = (data.course || "").trim();
-
-        if (!currentClass) {
-            alert("Course missing in DB");
-            return;
-        }
-
-        document.getElementById("loader").style.display = "none";
-        document.getElementById("welcomeMsg").innerText =
-            "Namaste " + (data.name || "Student");
-        document.getElementById("classNameDisplay").innerText = currentClass;
-
-        displaySubjects(currentClass);
-
-        // ✅ LIVE CLASS
-        if (data.isPaid && data.liveLink) {
-            document.getElementById("liveClassSection").classList.remove("hidden");
-            document.getElementById("liveMeetLink").href = data.liveLink;
-        }
-
-        // ✅ PAYMENT LOCK
-        if (!data.isPaid) {
-            document.getElementById("paymentSection").classList.remove("hidden");
-            document.getElementById("subjectsList").classList.add("opacity-50","pointer-events-none");
-        }
-
-    } catch (err) {
-        console.error(err);
-    }
-});
-
-// ✅ SUBJECT SHOW
-function displaySubjects(className) {
-    const subjects = classSubjects[className];
-    const list = document.getElementById("subjectsList");
-
-    document.getElementById("subjectSection").classList.remove("hidden");
-
-    if (!subjects) {
-        list.innerHTML = `<p>No subjects found</p>`;
-        return;
-    }
-
-    list.innerHTML = "";
-
-    subjects.forEach(sub => {
-        list.innerHTML += `
-            <div onclick="loadChapters('${sub}')"
-                 class="bg-white p-4 text-center cursor-pointer shadow hover:bg-blue-100">
-                ${sub}
+        <div id="paymentSection" class="hidden bg-yellow-50 border-2 border-yellow-200 p-8 rounded-2xl text-center shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Activate Your Course</h3>
+            <p class="text-gray-600 mb-6">Aapne abhi tak subscription pay nahi kiya hai. Access ke liye payment karein.</p>
+            <div class="bg-white inline-block px-8 py-4 rounded-xl shadow-inner mb-6">
+                <span class="text-gray-500 block">Total Amount</span>
+                <span class="text-4xl font-black text-green-600">₹499</span>
             </div>
-        `;
-    });
-}
+            <br>
+            <button id="payNowBtn" class="bg-blue-600 text-white font-bold px-12 py-4 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl">
+                Pay with Razorpay
+            </button>
+        </div>
 
-// ✅ LOAD CHAPTERS
-async function loadChapters(subjectName) {
-    currentSubject = subjectName;
-    const list = document.getElementById("subjectsList");
+        <div id="courseContent" class="hidden">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Aapke Subjects</h3>
+            <div id="subjectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                </div>
 
-    list.innerHTML = "Loading...";
-
-    const snapshot = await db.collection("content")
-        .doc(currentClass)
-        .collection("Subjects")
-        .doc(subjectName)
-        .collection("Chapters")
-        .get();
-
-    list.innerHTML = "";
-
-    snapshot.forEach(doc => {
-        const chap = doc.data();
-
-        list.innerHTML += `
-            <div onclick="openChapter('${doc.id}','${chap.videoUrl}','${chap.notesUrl}')"
-                 class="bg-blue-100 p-3 cursor-pointer">
-                ${chap.title || doc.id}
+            <div id="videoModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-4">
+                <button onclick="closeVideo()" class="absolute top-5 right-5 text-white text-4xl">&times;</button>
+                <div class="w-full max-w-4xl aspect-video bg-black">
+                    <iframe id="videoFrame" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <h4 id="videoTitle" class="text-white mt-4 text-xl font-bold">Video Title</h4>
             </div>
-        `;
-    });
-}
+        </div>
+    </main>
 
-// ✅ OPEN CHAPTER
-function openChapter(title, video, notes) {
-    document.getElementById("subjectSection").classList.add("hidden");
-    document.getElementById("contentDisplay").classList.remove("hidden");
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    document.getElementById("chapterTitle").innerText = title;
-    document.getElementById("videoPlayer").src = video;
-    document.getElementById("notesLink").href = notes;
-}
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
 
-// BACK
-function goBackToChapters() {
-    document.getElementById("contentDisplay").classList.add("hidden");
-    document.getElementById("subjectSection").classList.remove("hidden");
-}
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-// PAYMENT
-function payWithRazorpay() {
-    alert("Integrate Razorpay here");
-}
+        let currentUser = null;
 
-// LOGOUT
-function logout() {
-    auth.signOut().then(() => {
-        window.location.href = "login.html";
-    });
-}
-</script>
+        // Check Authentication State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                loadUserData(user.uid);
+            } else {
+                window.location.href = "login.html";
+            }
+        });
 
+        // Load Student Profile and Payment Status
+        async function loadUserData(uid) {
+            const userRef = doc(db, "students", uid);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+                const data = userSnap.data();
+                document.getElementById('studentName').innerText = data.name;
+                document.getElementById('classInfo').innerText = `Course: ${data.class}`;
+
+                if (data.isPaid === true) {
+                    document.getElementById('courseContent').classList.remove('hidden');
+                    loadCourseContent(data.class);
+                } else {
+                    document.getElementById('paymentSection').classList.remove('hidden');
+                }
+            }
+        }
+
+        // Razorpay Integration
+        document.getElementById('payNowBtn').onclick = function() {
+            var options = {
+                "key": "rzp_test_SZlBfxFaDKpW25", // Aapki Test API Key
+                "amount": 49900, // Paise mein (499 * 100)
+                "name": "RDX Singh Academy",
+                "description": "Class 1 Course Fee",
+                "handler": async function (response) {
+                    // Payment Success hone par Firestore update karein
+                    const userRef = doc(db, "students", currentUser.uid);
+                    await updateDoc(userRef, {
+                        isPaid: true,
+                        paymentID: response.razorpay_payment_id
+                    });
+                    alert("Payment Successful! Course Activated.");
+                    location.reload(); // Refresh to show content
+                },
+                "prefill": {
+                    "email": currentUser.email
+                },
+                "theme": { "color": "#2563eb" }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        };
+
+        // Load Subjects and Videos from Firestore
+        async function loadCourseContent(className) {
+            const subjectsGrid = document.getElementById('subjectsGrid');
+            // Hum ek collection dhundhenge jo "subjects" ke naam se ho
+            const subRef = collection(db, "classes", className, "subjects");
+            const querySnapshot = await getDocs(subRef);
+
+            querySnapshot.forEach((doc) => {
+                const sub = doc.data();
+                const card = `
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition cursor-pointer border-t-4 border-blue-600" 
+                         onclick="playVideo('${sub.videoLink}', '${sub.title}')">
+                        <div class="text-4xl mb-3">📚</div>
+                        <h4 class="text-xl font-bold">${sub.title}</h4>
+                        <p class="text-gray-500 text-sm mt-2">Chapter-wise Videos Available</p>
+                        <button class="mt-4 text-blue-600 font-semibold">Start Learning →</button>
+                    </div>
+                `;
+                subjectsGrid.innerHTML += card;
+            });
+        }
+
+        // Global functions for Video Modal
+        window.playVideo = function(link, title) {
+            // YouTube link ko embed format mein badalna zaroori hai
+            let embedUrl = link.replace("watch?v=", "embed/");
+            document.getElementById('videoFrame').src = embedUrl;
+            document.getElementById('videoTitle').innerText = title;
+            document.getElementById('videoModal').classList.remove('hidden');
+        }
+
+        window.closeVideo = function() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.getElementById('videoFrame').src = "";
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').onclick = () => signOut(auth);
+    </script>
 </body>
 </html>
