@@ -214,6 +214,38 @@
         function logout() {
             auth.signOut().then(() => { window.location.href = "login.html"; });
         }
+
+    
+    auth.onAuthStateChanged((user) => {
+    if (user) {
+        console.log("✅ User logged in:", user.uid);
+
+        db.collection("students").doc(user.uid).get()
+        .then((doc) => {
+
+            console.log("📄 Document exists:", doc.exists);
+
+            if (doc.exists) {
+                const data = doc.data();
+                console.log("📦 Full Firestore Data:", data);
+
+                currentClass = data.class;
+                console.log("🎯 Class from DB:", currentClass);
+
+                displaySubjects(currentClass);
+
+            } else {
+                console.log("❌ No document found in 'students'");
+            }
+        })
+        .catch((error) => {
+            console.error("🔥 Firestore Error:", error);
+        });
+
+    } else {
+        console.log("❌ User not logged in");
+    }
+});
     </script>
 </body>
 </html>
