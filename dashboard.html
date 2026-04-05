@@ -74,34 +74,50 @@
     </div>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-            authDomain: "rdx-singh-acedemy.firebaseapp.com",
-            projectId: "rdx-singh-acedemy",
-            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-            messagingSenderId: "833608207106",
-            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
-        };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+const firebaseConfig = {
+    apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+    authDomain: "rdx-singh-acedemy.firebaseapp.com",
+    projectId: "rdx-singh-acedemy",
+    storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+    messagingSenderId: "833608207106",
+    appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
 
         // Subjects Mapping
-        const classSubjects = {
-    "class1": ["Maths", "English", "Hindi", "EVS"], // Spelling exact "Class-1" rakhein
-    "class2": ["Maths", "English", "Hindi", "GK"],
-    "class3": ["Maths", "Science", "Social Science", "English"],
+       const classSubjects = {
+    "Class-1": ["Maths", "English", "Hindi", "EVS"],
+    "Class-2": ["Maths", "English", "Hindi", "GK"],
+    "Class-3": ["Maths", "Science", "Social Science", "English"],
     "Accounting": ["GST", "Income Tax", "Tally Prime", "Auditing"]
 };
 
-        let currentClass = "";
-        let currentSubject = "";
+let currentClass = "";
+let currentSubject = "";
 
         auth.onAuthStateChanged((user) => {
-    if (user) {
-        db.collection("students").doc(user.uid).get().then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    console.log("✅ User logged in:", user.uid);
+
+    db.collection("students").doc(user.uid).get()
+    .then((doc) => {
+
+        if (!doc.exists) {
+            console.log("❌ No student document found");
+            return;
+        }
+
+        const data = doc.data();
+        console.log("📦 Firestore Data:", data);
+
                 
                 // Debugging ke liye console check karein
                 console.log("Student Class from DB:", data.class);
