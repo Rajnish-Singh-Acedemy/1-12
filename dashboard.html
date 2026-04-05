@@ -107,7 +107,7 @@
                 console.log("Student Class from DB:", data.class);
                 
                 // Firestore se aane wali exact value use karein
-                currentClass = data.class; 
+                currentClass = data.course; 
 
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('welcomeMsg').innerText = "Namaste " + (data.name || "Student") + "!";
