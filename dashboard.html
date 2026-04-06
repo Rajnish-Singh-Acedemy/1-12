@@ -17,37 +17,19 @@
     </nav>
 
     <main class="max-w-6xl mx-auto py-10 px-4">
-        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm">
-            <h2 class="text-2xl font-bold text-gray-800">Namaste, <span id="studentName">Student</span>!</h2>
-            <p id="classInfo" class="text-blue-600 font-medium">Loading your profile...</p>
+    <div class="mb-8 bg-white p-6 rounded-xl shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-800">Namaste, <span id="studentName">Student</span>!</h2>
+        <p id="classInfo" class="text-blue-600 font-medium">Loading...</p>
+    </div>
+
+    <div id="breadcrumb" class="mb-6 flex items-center gap-4 hidden">
+        <button onclick="goBack()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-bold">← Back</button>
+        <h3 id="currentViewTitle" class="text-xl font-bold text-gray-700">Subjects</h3>
+    </div>
+
+    <div id="displayGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         </div>
 
-        <div id="paymentSection" class="hidden bg-yellow-50 border-2 border-yellow-200 p-8 rounded-2xl text-center shadow-lg">
-            <h3 class="text-2xl font-bold text-gray-800 mb-2">Activate Your Course</h3>
-            <p class="text-gray-600 mb-6">Aapne abhi tak subscription pay nahi kiya hai. Access ke liye payment karein.</p>
-            <div class="bg-white inline-block px-8 py-4 rounded-xl shadow-inner mb-6">
-                <span class="text-gray-500 block">Total Amount</span>
-                <span class="text-4xl font-black text-green-600">₹499</span>
-            </div>
-            <br>
-            <button id="payNowBtn" class="bg-blue-600 text-white font-bold px-12 py-4 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl">
-                Pay with Razorpay
-            </button>
-        </div>
-
-        <div id="courseContent" class="hidden">
-            <h3 class="text-2xl font-bold mb-6 text-gray-800">Aapke Subjects</h3>
-            <div id="subjectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                </div>
-
-            <div id="videoModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-4">
-                <button onclick="closeVideo()" class="absolute top-5 right-5 text-white text-4xl">&times;</button>
-                <div class="w-full max-w-4xl aspect-video bg-black">
-                    <iframe id="videoFrame" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <h4 id="videoTitle" class="text-white mt-4 text-xl font-bold">Video Title</h4>
-            </div>
-        </div>
     </main>
 
     <script type="module">
