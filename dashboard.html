@@ -145,6 +145,81 @@
 
         // Logout
         document.getElementById('logoutBtn').onclick = () => signOut(auth);
+
+let currentClass = "";
+
+// 1. Sabse pehle Subjects Load karein
+async function loadSubjects(className) {
+    currentClass = className;
+    const grid = document.getElementById('displayGrid');
+    const breadcrumb = document.getElementById('breadcrumb');
+    
+    grid.innerHTML = "<p>Loading Subjects...</p>";
+    breadcrumb.classList.add('hidden'); // Shuruat mein back button nahi chahiye
+
+    const subRef = collection(db, "classes", className, "subjects");
+    const snap = await getDocs(subRef);
+
+    grid.innerHTML = "";
+    snap.forEach((doc) => {
+        const sub = doc.id; // Document ID hi subject ka naam hai (e.g., Maths)
+        grid.innerHTML += `
+            <div onclick="loadChapters('${sub}')" class="bg-white p-8 rounded-2xl shadow-md border-b-4 border-blue-600 hover:scale-105 transition cursor-pointer text-center">
+                <div class="text-5xl mb-4">📚</div>
+                <h4 class="text-xl font-black">${sub}</h4>
+                <p class="text-blue-500 mt-2 font-semibold">View Chapters →</p>
+            </div>`;
+    });
+}
+
+// 2. Subject par click karne par Chapters Load karein
+window.loadChapters = async function(subjectID) {
+    const grid = document.getElementById('displayGrid');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const title = document.getElementById('currentViewTitle');
+
+    grid.innerHTML = "<p>Loading Chapters...</p>";
+    breadcrumb.classList.remove('hidden'); // Back button dikhayein
+    title.innerText = subjectID + " - Chapters";
+
+    const chapRef = collection(db, "classes", currentClass, "subjects", subjectID, "chapters");
+    const snap = await getDocs(chapRef);
+
+    grid.innerHTML = "";
+    snap.forEach((doc) => {
+        const chap = doc.data();
+        grid.innerHTML += `
+            <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500">
+                <h4 class="text-lg font-bold text-gray-800">${chap.title}</h4>
+                <div class="flex gap-3 mt-4">
+                    <button onclick="window.playVideo('${chap.videoLink}', '${chap.title}')" class="flex-1 bg-blue-600 text-white py-2 rounded-lg text-sm font-bold">▶ Watch Video</button>
+                    ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 rounded-lg text-sm font-bold text-center">📄 PDF Notes</a>` : ''}
+                </div>
+            </div>`;
+    });
+}
+
+// 3. Wapas Subjects par jaane ke liye
+window.goBack = function() {
+    loadSubjects(currentClass);
+}
+
+// Update loadUserData to call loadSubjects
+async function loadUserData(uid) {
+    const userRef = doc(db, "students", uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+        const data = userSnap.data();
+        document.getElementById('studentName').innerText = data.name;
+        document.getElementById('classInfo').innerText = `Course: ${data.class}`;
+        if (data.isPaid) {
+            loadSubjects(data.class);
+        } else {
+            document.getElementById('paymentSection').classList.remove('hidden');
+        }
+    }
+}
+        
     </script>
 </body>
 </html>
