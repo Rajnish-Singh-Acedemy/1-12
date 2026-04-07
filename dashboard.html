@@ -135,11 +135,12 @@
                         </div>`;
                 });
             } catch (error) {
+                console.error(error);
                 grid.innerHTML = "<p class='text-red-500'>Error loading subjects.</p>";
             }
         }
 
-        // 4. Load Chapters for selected Subject
+        // 4. UPDATED: Load Chapters from Array Field
         window.loadChapters = async function(subjectID) {
             const grid = document.getElementById('displayGrid');
             const breadcrumb = document.getElementById('breadcrumb');
@@ -150,34 +151,47 @@
             title.innerText = subjectID;
 
             try {
-                const chapRef = collection(db, "classes", currentClass, "subjects", subjectID, "chapters");
-                const snap = await getDocs(chapRef);
+                // Yahan hum Document fetch kar rahe hain kyunki Chapters ek Array field hai
+                const subDocRef = doc(db, "classes", currentClass, "subjects", subjectID);
+                const snap = await getDoc(subDocRef);
 
                 grid.innerHTML = "";
-                if (snap.empty) {
-                    grid.innerHTML = "<p class='text-gray-500'>No chapters added yet.</p>";
-                    return;
-                }
 
-                snap.forEach((doc) => {
-                    const chap = doc.data();
-                    grid.innerHTML += `
-                        <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500 hover:shadow-lg transition">
-                            <h4 class="text-lg font-bold text-gray-800">${chap.title || doc.id}</h4>
-                            <div class="flex flex-wrap gap-3 mt-4">
-                                <button onclick="window.playVideo('${chap.videoLink}', '${chap.title}')" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-blue-700 transition">▶ Video</button>
-                                ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-sm font-bold text-center hover:bg-orange-600 transition">📄 Notes</a>` : ''}
-                            </div>
-                        </div>`;
-                });
+                if (snap.exists()) {
+                    const data = snap.data();
+                    // Screenshot ke mutabiq field ka naam 'Chapters' (Capital C) hai
+                    const chaptersArray = data.Chapters;
+
+                    if (!chaptersArray || chaptersArray.length === 0) {
+                        grid.innerHTML = "<p class='text-gray-500'>Is subject mein koi chapters nahi mile.</p>";
+                        return;
+                    }
+
+                    chaptersArray.forEach((chap, index) => {
+                        grid.innerHTML += `
+                            <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500 hover:shadow-lg transition">
+                                <h4 class="text-lg font-bold text-gray-800">${chap.title || 'Chapter ' + (index + 1)}</h4>
+                                <div class="flex flex-wrap gap-3 mt-4">
+                                    <button onclick="window.playVideo('${chap.videoLink}', '${chap.title}')" 
+                                        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                                        ▶ Video
+                                    </button>
+                                    ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-sm font-bold text-center hover:bg-orange-600 transition">📄 Notes</a>` : ''}
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>";
+                }
             } catch (error) {
+                console.error("Error loading chapters:", error);
                 grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>";
             }
         }
 
         // 5. Global Video Logic
         window.playVideo = function(link, title) {
-            if (!link || link.includes("video link")) {
+            if (!link || link.includes("video link") || link === "") {
                 alert("Iss chapter ki video abhi available nahi hai.");
                 return;
             }
@@ -187,7 +201,7 @@
                 if (link.includes("v=")) {
                     videoId = link.split("v=")[1].split("&")[0];
                 } else if (link.includes("youtu.be/")) {
-                    videoId = link.split("youtu.be/")[1];
+                    videoId = link.split("youtu.be/")[1].split("?")[0];
                 }
 
                 if (videoId) {
