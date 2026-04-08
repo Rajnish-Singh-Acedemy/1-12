@@ -1,53 +1,103 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
-    
-    <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
-        <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Primary</span>
-                <span class="text-green-600 font-bold text-lg">₹499/-</span>
+<div class="bg-white shadow-sm border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-8">
+                <h1 class="text-xl font-bold text-blue-800">RDX Academy</h1>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="#" class="text-blue-600 border-b-2 border-blue-600 px-3 py-2 text-sm font-bold">Academic Courses</a>
+                    <a href="professional.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition">Professional (Tax/Finance)</a>
+                    <a href="inquiry.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium transition">My Inquiries</a>
+                </nav>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition">Class 1</h3>
-            <p class="text-gray-500 text-sm mb-6">Comprehensive coaching for all subjects with expert guidance.</p>
-            <a href="classes/class1.html" class="block text-center bg-gray-50 text-blue-600 font-bold py-3 rounded-xl border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-all">View Details</a>
+            <div class="flex items-center">
+                <span class="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-bold animate-pulse">New Batches Open</span>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
-        <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-indigo-100 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Middle School</span>
-                <span class="text-green-600 font-bold text-lg">₹699/-</span>
+<div class="bg-gray-50 min-h-screen py-10 px-4">
+    <div class="max-w-7xl mx-auto">
+        
+        <header class="mb-10">
+            <h2 class="text-3xl font-extrabold text-gray-900">Academic Programs</h2>
+            <p class="text-gray-600 mt-2">Quality education from Classes 1 to 12 with personalized attention.</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <div class="h-3 bg-blue-500"></div>
+                <div class="p-6 flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs font-black uppercase text-blue-500 tracking-widest">Primary</span>
+                        <span class="text-lg font-bold text-gray-900">₹499</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Class 1</h3>
+                    <p class="text-gray-500 text-sm mt-2 leading-relaxed">Foundation building with interactive learning modules.</p>
+                </div>
+                <div class="p-6 pt-0">
+                    <a href="classes/class1.html" class="flex items-center justify-center w-full bg-blue-50 text-blue-700 font-bold py-3 rounded-xl hover:bg-blue-600 hover:text-white transition-colors group">
+                        View Course <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition">Class 6</h3>
-            <p class="text-gray-500 text-sm mb-6">Building strong foundations for higher competitive exams.</p>
-            <a href="classes/class6.html" class="block text-center bg-gray-50 text-blue-600 font-bold py-3 rounded-xl border border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-all">View Details</a>
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col">
+                <div class="h-3 bg-indigo-500"></div>
+                <div class="p-6 flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs font-black uppercase text-indigo-500 tracking-widest">Middle</span>
+                        <span class="text-lg font-bold text-gray-900">₹699</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Class 6</h3>
+                    <p class="text-gray-500 text-sm mt-2 leading-relaxed">Introduction to advanced concepts and analytical thinking.</p>
+                </div>
+                <div class="p-6 pt-0">
+                    <a href="classes/class6.html" class="flex items-center justify-center w-full bg-indigo-50 text-indigo-700 font-bold py-3 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors group">
+                        View Course <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-blue-700 to-blue-900 rounded-3xl overflow-hidden shadow-xl hover:shadow-blue-200 transition-all duration-500 transform hover:-translate-y-2 relative flex flex-col">
+                <div class="absolute top-4 right-4 bg-yellow-400 text-blue-900 text-[10px] font-black px-3 py-1 rounded-full uppercase">Scholarship</div>
+                <div class="p-8 flex-grow">
+                    <div class="mb-4">
+                        <span class="text-blue-200 text-xs font-bold uppercase tracking-widest">Secondary</span>
+                    </div>
+                    <h3 class="text-3xl font-black text-white">Class 10</h3>
+                    <p class="text-blue-100 text-sm mt-4 leading-relaxed">Board exam mastery with previous year paper solving.</p>
+                    <div class="mt-6">
+                        <span class="text-yellow-400 text-2xl font-black italic">FREE OFFER</span>
+                    </div>
+                </div>
+                <div class="p-8 pt-0">
+                    <a href="classes/class10.html" class="flex items-center justify-center w-full bg-white text-blue-900 font-black py-4 rounded-2xl hover:bg-yellow-400 transition-all shadow-lg">
+                        ENROLL NOW
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-red-600 to-red-800 rounded-3xl overflow-hidden shadow-xl hover:shadow-red-200 transition-all duration-500 transform hover:-translate-y-2 relative flex flex-col">
+                <div class="absolute top-4 right-4 bg-white text-red-600 text-[10px] font-black px-3 py-1 rounded-full uppercase">Hot Deal</div>
+                <div class="p-8 flex-grow">
+                    <div class="mb-4">
+                        <span class="text-red-100 text-xs font-bold uppercase tracking-widest">Sr. Secondary</span>
+                    </div>
+                    <h3 class="text-3xl font-black text-white">Class 12</h3>
+                    <p class="text-red-100 text-sm mt-4 leading-relaxed">Specialized coaching for Science, Commerce & Arts boards.</p>
+                    <div class="mt-6">
+                        <span class="text-white text-2xl font-black italic">FREE ACCESS</span>
+                    </div>
+                </div>
+                <div class="p-8 pt-0">
+                    <a href="classes/class12.html" class="flex items-center justify-center w-full bg-white text-red-700 font-black py-4 rounded-2xl hover:bg-yellow-400 hover:text-red-900 transition-all shadow-lg">
+                        GET STARTED
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div class="relative group bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2 border-2 border-yellow-400">
-        <div class="absolute top-0 right-0 bg-yellow-400 text-blue-900 text-[10px] font-black px-4 py-1 rounded-bl-lg uppercase">Best Offer</div>
-        <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Secondary</span>
-                <span class="text-yellow-400 font-black text-xl italic tracking-tighter">FREE</span>
-            </div>
-            <h3 class="text-2xl font-black text-white mb-2">Class 10</h3>
-            <p class="text-blue-100 text-sm mb-6">Targeting Board Excellence with special revision modules.</p>
-            <a href="classes/class10.html" class="block text-center bg-yellow-400 text-blue-900 font-black py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase text-sm">Grab Offer Now</a>
-        </div>
-    </div>
-
-    <div class="relative group bg-gradient-to-br from-red-600 to-orange-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2 border-2 border-yellow-400">
-        <div class="absolute top-0 right-0 bg-yellow-400 text-red-900 text-[10px] font-black px-4 py-1 rounded-bl-lg uppercase">Limited Time</div>
-        <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-                <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sr. Secondary</span>
-                <span class="text-yellow-400 font-black text-xl italic tracking-tighter">FREE</span>
-            </div>
-            <h3 class="text-2xl font-black text-white mb-2">Class 12</h3>
-            <p class="text-red-100 text-sm mb-6">Special focus on Board Exams & Entrance Preparation.</p>
-            <a href="classes/class12.html" class="block text-center bg-yellow-400 text-red-900 font-black py-3 rounded-xl hover:bg-white transition-all shadow-md uppercase text-sm">Grab Offer Now</a>
-        </div>
-    </div>
-
 </div>
