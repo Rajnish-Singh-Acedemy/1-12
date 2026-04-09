@@ -6,6 +6,10 @@
     <title>Student Dashboard | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&display=swap');
+        body { font-family: 'Hind', sans-serif; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
@@ -17,14 +21,14 @@
     </nav>
 
     <main class="max-w-6xl mx-auto py-10 px-4">
-        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm">
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border-l-8 border-blue-600">
             <h2 class="text-2xl font-bold text-gray-800">Namaste, <span id="studentName">Student</span>!</h2>
-            <p id="classInfo" class="text-blue-600 font-medium">Connecting to server...</p>
+            <p id="classInfo" class="text-blue-600 font-medium text-lg">Connecting to server...</p>
         </div>
 
         <div id="breadcrumb" class="mb-6 flex items-center gap-4 hidden">
             <button id="backBtn" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-bold transition">← Back to Subjects</button>
-            <h3 id="currentViewTitle" class="text-xl font-bold text-gray-700">Subjects</h3>
+            <h3 id="currentViewTitle" class="text-xl font-bold text-gray-700 border-l-4 border-orange-500 pl-3">Subjects</h3>
         </div>
 
         <div id="displayGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -33,23 +37,23 @@
 
         <div id="paymentSection" class="hidden bg-yellow-50 border-2 border-yellow-200 p-8 rounded-2xl text-center shadow-lg my-10">
             <h3 class="text-2xl font-bold text-gray-800 mb-2">Activate Your Course</h3>
-            <p class="text-gray-600 mb-6">Aapne abhi tak subscription pay nahi kiya hai. Access ke liye payment karein.</p>
-            <div class="bg-white inline-block px-8 py-4 rounded-xl shadow-inner mb-6">
-                <span class="text-gray-500 block">Total Amount</span>
-                <span class="text-4xl font-black text-green-600">₹499</span>
+            <p class="text-gray-600 mb-6 font-medium text-lg">Aapne abhi tak subscription pay nahi kiya hai. Access ke liye payment karein.</p>
+            <div class="bg-white inline-block px-10 py-5 rounded-2xl shadow-inner mb-6">
+                <span class="text-gray-500 block text-sm uppercase">Course Fee</span>
+                <span class="text-5xl font-black text-green-600">₹499</span>
             </div>
             <br>
-            <button id="payNowBtn" class="bg-blue-600 text-white font-bold px-12 py-4 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl">
+            <button id="payNowBtn" class="bg-blue-600 text-white font-bold px-12 py-4 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl text-lg">
                 Pay with Razorpay
             </button>
         </div>
 
-        <div id="videoModal" class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-4">
-            <button id="closeVideoBtn" class="absolute top-5 right-5 text-white text-4xl hover:text-red-500 transition">&times;</button>
-            <div class="w-full max-w-4xl aspect-video bg-black shadow-2xl">
+        <div id="videoModal" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center p-4">
+            <button id="closeVideoBtn" class="absolute top-5 right-5 text-white text-5xl hover:text-red-500 transition">&times;</button>
+            <div class="w-full max-w-4xl aspect-video bg-black shadow-2xl rounded-lg overflow-hidden">
                 <iframe id="videoFrame" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
             </div>
-            <h4 id="videoTitle" class="text-white mt-4 text-xl font-bold text-center">Video Title</h4>
+            <h4 id="videoTitle" class="text-white mt-6 text-2xl font-bold text-center px-4">Video Title</h4>
         </div>
     </main>
 
@@ -99,45 +103,42 @@
                         document.getElementById('paymentSection').classList.remove('hidden');
                     }
                 }
-            } catch (error) {
-                console.error("Error loading user data:", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
         async function loadSubjects(className) {
             const grid = document.getElementById('displayGrid');
             const breadcrumb = document.getElementById('breadcrumb');
-            grid.innerHTML = "<p class='text-blue-600'>Loading Subjects...</p>";
+            grid.innerHTML = "<p class='col-span-full text-center py-10 text-blue-600 font-bold'>Loading Subjects...</p>";
             breadcrumb.classList.add('hidden');
+            
             try {
                 const subRef = collection(db, "classes", className, "subjects");
                 const snap = await getDocs(subRef);
                 grid.innerHTML = "";
                 if (snap.empty) {
-                    grid.innerHTML = "<p class='text-red-500'>No subjects found for this class.</p>";
+                    grid.innerHTML = "<p class='col-span-full text-center py-10 text-red-500 font-bold'>No subjects found for this class.</p>";
                     return;
                 }
                 snap.forEach((doc) => {
                     const subName = doc.id; 
                     grid.innerHTML += `
                         <div onclick="window.loadChapters('${subName}')" class="bg-white p-8 rounded-2xl shadow-md border-b-4 border-blue-600 hover:scale-105 transition cursor-pointer text-center group">
-                            <div class="text-5xl mb-4 group-hover:animate-bounce">📚</div>
+                            <div class="text-5xl mb-4 group-hover:rotate-12 transition transform">📚</div>
                             <h4 class="text-xl font-black text-gray-800">${subName}</h4>
-                            <p class="text-blue-500 mt-2 font-semibold">View Chapters →</p>
+                            <p class="text-blue-500 mt-3 font-semibold group-hover:underline">View Chapters →</p>
                         </div>`;
                 });
-            } catch (error) {
-                grid.innerHTML = "<p class='text-red-500'>Error loading subjects.</p>";
-            }
+            } catch (error) { grid.innerHTML = "<p class='text-red-500'>Error loading subjects.</p>"; }
         }
 
-        // UPDATED: Load Chapters with Chapter Title String
+        // UPDATED: Aapke Firebase Screenshot ke mutabik Map Logic
         window.loadChapters = async function(subjectID) {
             const grid = document.getElementById('displayGrid');
             const breadcrumb = document.getElementById('breadcrumb');
             const title = document.getElementById('currentViewTitle');
 
-            grid.innerHTML = "<p class='text-blue-600'>Fetching Chapters...</p>";
+            grid.innerHTML = "<p class='col-span-full text-center py-10 text-blue-600 font-bold'>Fetching Chapters...</p>";
             breadcrumb.classList.remove('hidden');
             title.innerText = subjectID;
 
@@ -151,35 +152,34 @@
                     const chaptersArray = data.Chapters; 
 
                     if (!chaptersArray || chaptersArray.length === 0) {
-                        grid.innerHTML = "<p class='text-gray-500'>Is subject mein koi chapters nahi mile.</p>";
+                        grid.innerHTML = "<p class='col-span-full text-center py-10 text-gray-500 font-bold'>Iss subject mein koi chapters nahi mile.</p>";
                         return;
                     }
 
-                    chaptersArray.forEach((chap, index) => {
-                        // Yahan "Unit" ko hatakar sirf "Chapter: title" ka logic lagaya gaya hai
-                        // chap.title wo string field hai jo aapne Firebase mein save ki hai
-                        const chapterFullName = chap.title ? `Chapter: ${chap.title}` : `Chapter ${index + 1}`;
+                    chaptersArray.forEach((chapMap, index) => {
+                        // Logic: Map se field ka naam nikaalne ke liye (Hindi Name)
+                        const keys = Object.keys(chapMap);
+                        const chapterTitle = keys.find(k => k !== 'videoLink' && k !== 'notesLink' && k !== '') || `Chapter ${index + 1}`;
+                        const videoURL = chapMap.videoLink || "";
+                        const notesURL = chapMap.notesLink || "";
 
                         grid.innerHTML += `
-                            <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500 hover:shadow-lg transition">
-                                <div class="mb-4">
-                                    <h4 class="text-lg font-bold text-gray-800 leading-tight">${chapterFullName}</h4>
+                            <div class="bg-white p-6 rounded-2xl shadow border-l-4 border-orange-500 hover:shadow-xl transition flex flex-col justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-orange-500 uppercase">Unit ${index + 1}</span>
+                                    <h4 class="text-xl font-bold text-gray-800 mt-1 mb-4 leading-snug">${chapterTitle}</h4>
                                 </div>
-                                <div class="flex flex-wrap gap-3 mt-4">
-                                    <button onclick="window.playVideo('${chap.videoLink}', '${chap.title || 'Chapter'}')" 
-                                        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                                <div class="flex gap-3">
+                                    <button onclick="window.playVideo('${videoURL}', '${chapterTitle}')" 
+                                        class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-blue-700 transition shadow-md">
                                         ▶ Video
                                     </button>
-                                    ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-sm font-bold text-center hover:bg-orange-600 transition">📄 Notes</a>` : ''}
+                                    ${notesURL ? `<a href="${notesURL}" target="_blank" class="flex-1 bg-orange-500 text-white py-3 rounded-xl text-sm font-bold text-center hover:bg-orange-600 transition shadow-md">📄 Notes</a>` : ''}
                                 </div>
                             </div>`;
                     });
-                } else {
-                    grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>";
-                }
-            } catch (error) {
-                grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>";
-            }
+                } else { grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>"; }
+            } catch (error) { grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>"; }
         }
 
         window.playVideo = function(link, title) {
@@ -188,22 +188,14 @@
                 return;
             }
             let videoId = "";
-            try {
-                if (link.includes("v=")) {
-                    videoId = link.split("v=")[1].split("&")[0];
-                } else if (link.includes("youtu.be/")) {
-                    videoId = link.split("youtu.be/")[1].split("?")[0];
-                }
-                if (videoId) {
-                    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                    document.getElementById('videoTitle').innerText = title;
-                    document.getElementById('videoModal').classList.remove('hidden');
-                } else {
-                    alert("Invalid YouTube Link!");
-                }
-            } catch (e) {
-                alert("Video player error.");
-            }
+            if (link.includes("v=")) videoId = link.split("v=")[1].split("&")[0];
+            else if (link.includes("youtu.be/")) videoId = link.split("youtu.be/")[1].split("?")[0];
+            
+            if (videoId) {
+                document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                document.getElementById('videoTitle').innerText = title;
+                document.getElementById('videoModal').classList.remove('hidden');
+            } else { alert("Invalid YouTube Link!"); }
         }
 
         document.getElementById('backBtn').onclick = () => loadSubjects(currentClass);
@@ -221,15 +213,12 @@
                 "description": "Subscription Fee",
                 "handler": async function (response) {
                     const userRef = doc(db, "students", currentUser.uid);
-                    await updateDoc(userRef, {
-                        isPaid: true,
-                        paymentID: response.razorpay_payment_id
-                    });
-                    alert("Success! Page reload ho raha hai...");
+                    await updateDoc(userRef, { isPaid: true, paymentID: response.razorpay_payment_id });
+                    alert("Success! Dashboard unlock ho gaya.");
                     location.reload();
                 },
                 "prefill": { "email": currentUser.email },
-                "theme": { "color": "#2563eb" }
+                "theme": { "color": "#1d4ed8" }
             };
             var rzp1 = new Razorpay(options);
             rzp1.open();
