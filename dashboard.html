@@ -141,53 +141,59 @@
         }
 
         // 4. UPDATED: Load Chapters from Array Field
-        window.loadChapters = async function(subjectID) {
-            const grid = document.getElementById('displayGrid');
-            const breadcrumb = document.getElementById('breadcrumb');
-            const title = document.getElementById('currentViewTitle');
+       // 4. UPDATED: Load Chapters with Proper Naming
+window.loadChapters = async function(subjectID) {
+    const grid = document.getElementById('displayGrid');
+    const breadcrumb = document.getElementById('breadcrumb');
+    const title = document.getElementById('currentViewTitle');
 
-            grid.innerHTML = "<p class='text-blue-600'>Fetching Chapters...</p>";
-            breadcrumb.classList.remove('hidden');
-            title.innerText = subjectID;
+    grid.innerHTML = "<p class='text-blue-600'>Fetching Chapters...</p>";
+    breadcrumb.classList.remove('hidden');
+    title.innerText = subjectID;
 
-            try {
-                // Yahan hum Document fetch kar rahe hain kyunki Chapters ek Array field hai
-                const subDocRef = doc(db, "classes", currentClass, "subjects", subjectID);
-                const snap = await getDoc(subDocRef);
+    try {
+        const subDocRef = doc(db, "classes", currentClass, "subjects", subjectID);
+        const snap = await getDoc(subDocRef);
 
-                grid.innerHTML = "";
+        grid.innerHTML = "";
 
-                if (snap.exists()) {
-                    const data = snap.data();
-                    // Screenshot ke mutabiq field ka naam 'Chapters' (Capital C) hai
-                    const chaptersArray = data.Chapters;
+        if (snap.exists()) {
+            const data = snap.data();
+            const chaptersArray = data.Chapters; // Firebase field 'Chapters' (Array)
 
-                    if (!chaptersArray || chaptersArray.length === 0) {
-                        grid.innerHTML = "<p class='text-gray-500'>Is subject mein koi chapters nahi mile.</p>";
-                        return;
-                    }
-
-                    chaptersArray.forEach((chap, index) => {
-                        grid.innerHTML += `
-                            <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500 hover:shadow-lg transition">
-                                <h4 class="text-lg font-bold text-gray-800">${chap.title || 'Chapter ' + (index + 1)}</h4>
-                                <div class="flex flex-wrap gap-3 mt-4">
-                                    <button onclick="window.playVideo('${chap.videoLink}', '${chap.title}')" 
-                                        class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
-                                        ▶ Video
-                                    </button>
-                                    ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-sm font-bold text-center hover:bg-orange-600 transition">📄 Notes</a>` : ''}
-                                </div>
-                            </div>`;
-                    });
-                } else {
-                    grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>";
-                }
-            } catch (error) {
-                console.error("Error loading chapters:", error);
-                grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>";
+            if (!chaptersArray || chaptersArray.length === 0) {
+                grid.innerHTML = "<p class='text-gray-500'>Is subject mein koi chapters nahi mile.</p>";
+                return;
             }
+
+            chaptersArray.forEach((chap, index) => {
+                // Chapter Name set karne ka logic
+                // Agar title field blank hai, toh sirf 'Chapter 1' dikhega
+                const chapterDisplayTitle = chap.title ? `Chapter ${index + 1}: ${chap.title}` : `Chapter ${index + 1}`;
+
+                grid.innerHTML += `
+                    <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500 hover:shadow-lg transition">
+                        <div class="mb-2">
+                            <span class="text-xs font-bold text-green-600 uppercase tracking-wider">Unit ${index + 1}</span>
+                            <h4 class="text-lg font-extrabold text-gray-800 leading-tight">${chapterDisplayTitle}</h4>
+                        </div>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <button onclick="window.playVideo('${chap.videoLink}', '${chap.title || 'Chapter ' + (index+1)}')" 
+                                class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
+                                ▶ Video
+                            </button>
+                            ${chap.notesLink ? `<a href="${chap.notesLink}" target="_blank" class="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-sm font-bold text-center hover:bg-orange-600 transition">📄 Notes</a>` : ''}
+                        </div>
+                    </div>`;
+            });
+        } else {
+            grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>";
         }
+    } catch (error) {
+        console.error("Error loading chapters:", error);
+        grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>";
+    }
+}
 
         // 5. Global Video Logic
         window.playVideo = function(link, title) {
