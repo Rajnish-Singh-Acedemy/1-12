@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 1 | RDX Singh Academy</title>
+    <title>Class 3 | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&display=swap');
+        body { font-family: 'Hind', sans-serif; }
+    </style>
 </head>
 <body class="bg-gray-50">
 
@@ -17,48 +24,129 @@
 
     <header class="py-12 bg-white border-b text-center">
         <h2 class="text-4xl font-extrabold text-blue-600">Class 3 Academic Program</h2>
-        <p class="mt-2 text-gray-600">Foundation course designed for excellence.</p>
+        <p class="mt-2 text-gray-600">Foundation course designed for excellence in Class 3.</p>
     </header>
 
     <main class="max-w-4xl mx-auto py-10 px-4">
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li class="flex items-center">✅ Mathematics (Basic)</li>
-                    <li class="flex items-center">✅ English Grammar & Literature</li>
-                    <li class="flex items-center">✅ Hindi / Regional Language</li>
-                    <li class="flex items-center">✅ Environmental Studies (EVS)</li>
+                    <li>✅ NCERT- Mathematics</li>
+                    <li>✅ NCERT- English</li>
+                    <li>✅ NCERT- Hindi</li>
+                    <li>✅ NCERT- The world around us</li>
+                    <li>✅ NCERT- Arts</li>
+                    <li>✅ NCERT- Physical education and well being</li>
                 </ul>
             </div>
 
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
-                <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year Academic Session</p>
-                <p class="text-gray-600 mb-2"><strong>Mode:</strong> Online / Offline</p>
+                <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year</p>
                 <div class="mt-4 p-3 bg-green-50 rounded-lg">
-                    <span class="text-sm text-green-700 font-bold uppercase tracking-wider">Course Fees</span>
-                    <p class="text-2xl font-black text-green-600">₹499 / Month</p>
+                    <p class="text-2xl font-black text-green-600">₹499/ per month or ₹2999/Year </p>
+                    <p class="text-sm text-gray-600">Video Classes, Notes, Live Classes, Weekly Test</p>
                 </div>
             </div>
-
         </div>
 
         <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
             <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
-            <p class="my-4 opacity-90">Seats are limited. Secure your future with RDX Singh Academy.</p>
-            <button class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                Enroll Now
-            </button>
+            <p class="my-4 opacity-90">Seats are limited. Choose an option to proceed for Class 3.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg text-center">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
         </div>
-
     </main>
 
-    <footer class="text-center py-6 text-gray-500 text-sm">
-        &copy; 2026 RDX Singh Academy. All Rights Reserved.
-    </footer>
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">New Student Sign-Up (Class 3)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <hr>
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+                
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                    Submit & Register
+                </button>
+            </form>
+        </div>
+    </div>
 
+    <script>
+        // Firebase Config (Keep this same for the whole project)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI Logic
+        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+
+        // Signup Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // "class: Class-3" yahi name aapke Firestore database mein save hoga
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Class-3", // Standard format used in your dashboard
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // Student data ko "students" collection mein save karna
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful for Class 3!");
+                    sessionStorage.setItem('selectedCourse', 'Class-3');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
 </body>
 </html>
