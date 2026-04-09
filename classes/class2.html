@@ -103,36 +103,39 @@
         function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
 
         // Signup Logic
-        document.getElementById('signupForm').onsubmit = function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const userData = {
-                name: document.getElementById('sName').value,
-                fatherName: document.getElementById('fName').value,
-                address: document.getElementById('address').value,
-                mobile: document.getElementById('mobile').value,
-                class: "Class-2",
-                isPaid: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+document.getElementById('signupForm').onsubmit = function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    // YAHAN FIX HAI: Class Name ko Firestore collection ke naam se match karein
+    const userData = {
+        name: document.getElementById('sName').value,
+        fatherName: document.getElementById('fName').value,
+        address: document.getElementById('address').value,
+        mobile: document.getElementById('mobile').value,
+        class: "Class 2", // Dashboard isi naam se data dhundhega
+        isPaid: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    // Store extra data in Firestore
-                    return db.collection("students").doc(user.uid).set(userData);
-                })
-                .then(() => {
-                    alert("Registration Successful!");
-                    sessionStorage.setItem('selectedCourse', 'Class-1');
-                    window.location.href = "../dashboard.html";
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        };
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            // Store extra data in Firestore
+            return db.collection("students").doc(user.uid).set(userData);
+        })
+        .then(() => {
+            alert("Registration Successful!");
+            // Session storage mein bhi sahi class name save karein
+            sessionStorage.setItem('selectedCourse', 'Class 2');
+            window.location.href = "../dashboard.html";
+        })
+        .catch((error) => {
+            alert("Error: " + error.message);
+        });
+};
     </script>
 </body>
 </html>
