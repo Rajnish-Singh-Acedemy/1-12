@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 2 | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-50">
 
@@ -24,16 +21,14 @@
     </header>
 
     <main class="max-w-4xl mx-auto py-10 px-4">
-        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li>✅ NCERT- Joyful Mathematics(English)</li>
-                     <li>✅ NCERT- Joyful Mathematics(Hindi)</li>
-                    <li>✅ NCERT-English (Mridang)</li>
-                    <li>✅ NCERT-Hindi(Sarangi)</li>
-                    
+                    <li>✅ NCERT- Joyful Mathematics (English)</li>
+                    <li>✅ NCERT- Joyful Mathematics (Hindi)</li>
+                    <li>✅ NCERT- English (Mridang)</li>
+                    <li>✅ NCERT- Hindi (Sarangi)</li>
                 </ul>
             </div>
 
@@ -41,22 +36,17 @@
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
                 <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year</p>
                 <div class="mt-4 p-3 bg-green-50 rounded-lg">
-                    <p class="text-2xl font-black text-green-600">₹499/ per month or ₹2999/ Year</p>
+                    <p class="text-2xl font-black text-green-600">₹499/ per month</p>
                 </div>
             </div>
         </div>
 
         <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
             <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
-            <p class="my-4 opacity-90">Seats are limited. Choose an option to proceed.</p>
-            
+            <p class="my-4 opacity-90">Seats are limited. Registration start karein.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                    Login (Existing Student)
-                </a>
-                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
-                    New Admission (Sign Up)
-                </button>
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">Login</a>
+                <button onclick="document.getElementById('signupModal').classList.remove('hidden')" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">New Admission</button>
             </div>
         </div>
     </main>
@@ -64,28 +54,23 @@
     <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">New Student Sign-Up</h2>
-                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+                <h2 class="text-2xl font-bold text-gray-800">Class 2 Registration</h2>
+                <button onclick="document.getElementById('signupModal').classList.add('hidden')" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
             </div>
-            
             <form id="signupForm" class="space-y-4">
-                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
-                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
-                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
-                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
-                <hr>
-                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="sName" placeholder="Student Name" class="w-full p-3 border rounded-lg" required>
+                <input type="email" id="email" placeholder="Email (User ID)" class="w-full p-3 border rounded-lg" required>
                 <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
-                
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
-                    Submit & Register
-                </button>
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Register Now</button>
             </form>
         </div>
     </div>
 
-    <script>
-        // Firebase Config
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
             authDomain: "rdx-singh-acedemy.firebaseapp.com",
@@ -94,48 +79,44 @@
             messagingSenderId: "833608207106",
             appId: "1:833608207106:web:88c09aee29ed5eff28101b"
         };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
 
-        // UI Logic
-        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
-        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // Signup Logic
-document.getElementById('signupForm').onsubmit = function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    // YAHAN FIX HAI: Class Name ko Firestore collection ke naam se match karein
-    const userData = {
-        name: document.getElementById('sName').value,
-        fatherName: document.getElementById('fName').value,
-        address: document.getElementById('address').value,
-        mobile: document.getElementById('mobile').value,
-        class: "Class 2", // Dashboard isi naam se data dhundhega
-        isPaid: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Processing...";
+            btn.disabled = true;
 
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            // Store extra data in Firestore
-            return db.collection("students").doc(user.uid).set(userData);
-        })
-        .then(() => {
-            alert("Registration Successful!");
-            // Session storage mein bhi sahi class name save karein
-            sessionStorage.setItem('selectedCourse', 'Class 2');
-            window.location.href = "../dashboard.html";
-        })
-        .catch((error) => {
-            alert("Error: " + error.message);
+            const name = document.getElementById('sName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // 1. User Create Karein
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Firestore mein data save karein (Yahan spelling ka dhyan dein)
+                await setDoc(doc(db, "students", user.uid), {
+                    name: name,
+                    email: email,
+                    class: "Class 2", // EXACT yahi spelling Firestore mein bhi honi chahiye
+                    isPaid: false,
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Registration Successful!");
+                window.location.href = "../dashboard.html";
+
+            } catch (error) {
+                alert("Error: " + error.message);
+                btn.innerText = "Register Now";
+                btn.disabled = false;
+            }
         });
-};
     </script>
 </body>
 </html>
