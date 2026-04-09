@@ -131,7 +131,7 @@
             }
         }
 
-        // UPDATED: Load Chapters with String Name (Only Chapter Title)
+        // UPDATED: Load Chapters with Chapter Title String
         window.loadChapters = async function(subjectID) {
             const grid = document.getElementById('displayGrid');
             const breadcrumb = document.getElementById('breadcrumb');
@@ -156,7 +156,8 @@
                     }
 
                     chaptersArray.forEach((chap, index) => {
-                        // "Unit" span hata diya gaya hai aur sirf "Chapter: Title" dikhaya gaya hai
+                        // Yahan "Unit" ko hatakar sirf "Chapter: title" ka logic lagaya gaya hai
+                        // chap.title wo string field hai jo aapne Firebase mein save ki hai
                         const chapterFullName = chap.title ? `Chapter: ${chap.title}` : `Chapter ${index + 1}`;
 
                         grid.innerHTML += `
