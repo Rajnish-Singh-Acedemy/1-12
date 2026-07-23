@@ -3,206 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration & Payment | RDX Singh Academy</title>
+    <title>Class 2 | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Razorpay SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-<body class="bg-slate-50">
+<body class="bg-gray-50">
 
-    <div class="max-w-lg mx-auto my-10 bg-white p-8 rounded-3xl shadow-2xl border border-slate-100">
-        <h2 class="text-3xl font-black text-blue-600 text-center mb-2">Student Registration</h2>
-        <p class="text-center text-slate-500 mb-6 text-sm">Apni Details aur Class Select karke Fee Pay karein.</p>
+    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">RDX Singh Academy</h1>
+            <a href="../index.html" class="bg-blue-800 px-4 py-2 rounded hover:bg-blue-700 transition">← Back to Home</a>
+        </div>
+    </nav>
 
-        <form id="signupForm" class="space-y-4">
-            <!-- Full Name -->
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Full Name</label>
-                <input type="text" id="userName" required placeholder="Aapka Poora Naam" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+    <header class="py-12 bg-white border-b text-center">
+        <h2 class="text-4xl font-extrabold text-blue-600">Class 2 Academic Program</h2>
+        <p class="mt-2 text-gray-600">Foundation course designed for excellence.</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto py-10 px-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li>✅ NCERT- Joyful Mathematics (English)</li>
+                    <li>✅ NCERT- Joyful Mathematics (Hindi)</li>
+                    <li>✅ NCERT- English (Mridang)</li>
+                    <li>✅ NCERT- Hindi (Sarangi)</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
+                <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year</p>
+                <div class="mt-4 p-3 bg-green-50 rounded-lg">
+                    <p class="text-2xl font-black text-green-600">₹499/ per month or ₹2999/Year </p>
+                    <p class="text-sm text-gray-600">Video Classes, Notes, Live Classes, Weekly Test</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
+            <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
+            <p class="my-4 opacity-90">Seats are limited. Choose an option to proceed.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">New Student Sign-Up (Class 2)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
             </div>
             
-            <!-- Email -->
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Email ID</label>
-                <input type="email" id="userEmail" required placeholder="example@gmail.com" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-            </div>
-
-            <!-- Class & Plan Selection (Class 1 to 12) -->
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Select Class & Fee Plan</label>
-                <select id="userClassPlan" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-                    <option value="">-- Class aur Plan Chunein --</option>
-                    
-                    <!-- Primary (Class 1 - 5) -->
-                    <optgroup label="Primary Classes (1st to 5th)">
-                        <option value="Class 1-5 (Monthly)" data-price="300">Class 1 to 5 - Monthly (₹300/month)</option>
-                        <option value="Class 1-5 (Yearly)" data-price="3000">Class 1 to 5 - Yearly (₹3,000/year)</option>
-                    </optgroup>
-
-                    <!-- Middle (Class 6 - 8) -->
-                    <optgroup label="Middle Classes (6th to 8th)">
-                        <option value="Class 6-8 (Monthly)" data-price="500">Class 6 to 8 - Monthly (₹500/month)</option>
-                        <option value="Class 6-8 (Yearly)" data-price="5000">Class 6 to 8 - Yearly (₹5,000/year)</option>
-                    </optgroup>
-
-                    <!-- Secondary (Class 9 & 10) -->
-                    <optgroup label="Secondary Classes (9th & 10th)">
-                        <option value="Class 9th (Monthly)" data-price="700">Class 9th - Monthly (₹700/month)</option>
-                        <option value="Class 9th (Yearly)" data-price="7000">Class 9th - Yearly (₹7,000/year)</option>
-                        <option value="Class 10th (Monthly)" data-price="800">Class 10th - Monthly (₹800/month)</option>
-                        <option value="Class 10th (Yearly)" data-price="8000">Class 10th - Yearly (₹8,000/year)</option>
-                    </optgroup>
-
-                    <!-- Senior Secondary (Class 11 & 12) -->
-                    <optgroup label="Higher Classes (11th & 12th)">
-                        <option value="Class 11th (Monthly)" data-price="1000">Class 11th - Monthly (₹1,000/month)</option>
-                        <option value="Class 11th (Yearly)" data-price="10000">Class 11th - Yearly (₹10,000/year)</option>
-                        <option value="Class 12th (Monthly)" data-price="1200">Class 12th - Monthly (₹1,200/month)</option>
-                        <option value="Class 12th (Yearly)" data-price="12000">Class 12th - Yearly (₹12,000/year)</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <!-- Password -->
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Create Password</label>
-                <input type="password" id="userPass" required placeholder="••••••••" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all mt-2">
-                Register & Pay Now
-            </button>
-        </form>
-
-        <!-- Existing Account Prompt -->
-        <div class="mt-6 pt-6 border-t border-slate-100 text-center">
-            <p class="text-sm text-slate-500">Pehle se registration kar chuke hain?</p>
-            <a href="login.html" class="inline-block mt-2 px-6 py-2 border-2 border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-all text-sm">
-                Aap Log In Karein
-            </a>
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <hr>
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+                
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                    Submit & Register
+                </button>
+            </form>
         </div>
     </div>
 
-<script>
-    // 1. Firebase Configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-        authDomain: "rdx-singh-acedemy.firebaseapp.com",
-        databaseURL: "https://rdx-singh-acedemy-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "rdx-singh-acedemy",
-        storageBucket: "rdx-singh-acedemy.firebasestorage.app",
-        messagingSenderId: "833608207106",
-        appId: "1:833608207106:web:88c09aee29ed5eff28101b",
-        measurementId: "G-EYWXXZBKBP"
-    };
-
-    // 2. Initialize Firebase
-    if (!firebase.apps.length) {
+    <script>
+        // Firebase Config (Same as Class 1)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
         firebase.initializeApp(firebaseConfig);
-    }
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-    // 3. Signup & Payment Flow Logic
-    document.getElementById('signupForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+        // UI Logic
+        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
 
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerText;
-        
-        const name = document.getElementById('userName').value;
-        const email = document.getElementById('userEmail').value;
-        const selectElem = document.getElementById('userClassPlan');
-        const selectedOption = selectElem.options[selectElem.selectedIndex];
-        
-        const selectedPlan = selectedOption.value; // e.g., "Class 10th (Monthly)"
-        const priceInRupees = parseInt(selectedOption.getAttribute('data-price')); // e.g., 800
-        const amountInPaise = priceInRupees * 100; // Razorpay accepts in Paise (₹800 = 80000 Paise)
-        const pass = document.getElementById('userPass').value;
-
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Checking Credentials...";
-
-        try {
-            // Step A: Account Create karne ki koshish karein
-            const userCredential = await auth.createUserWithEmailAndPassword(email, pass);
-            const user = userCredential.user;
-
-            // Profile update
-            await user.updateProfile({ displayName: name });
-
-            submitBtn.innerText = "Opening Payment Gateway...";
-
-            // Step B: Razorpay Integration Setup
-            const options = {
-                "key": "YOUR_RAZORPAY_KEY_ID", // Yahan apni Razorpay Key ID daalein (rzp_test_xxx ya rzp_live_xxx)
-                "amount": amountInPaise, 
-                "currency": "INR",
-                "name": "RDX Singh Academy",
-                "description": `Admission Fee: ${selectedPlan}`,
-                "handler": async function (response) {
-                    // Payment successful hone par Firestore mein record add karein
-                    await db.collection("students").doc(user.uid).set({
-                        uid: user.uid,
-                        name: name,
-                        email: email,
-                        classPlan: selectedPlan,
-                        amountPaid: priceInRupees,
-                        paymentId: response.razorpay_payment_id,
-                        paymentStatus: "Paid",
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    // Session Storage update
-                    sessionStorage.setItem('selectedCourse', selectedPlan);
-                    sessionStorage.setItem('userName', name);
-
-                    alert("Registration & Payment Successful! Welcome to RDX Singh Academy.");
-                    window.location.href = "dashboard.html";
-                },
-                "prefill": {
-                    "name": name,
-                    "email": email
-                },
-                "theme": {
-                    "color": "#2563eb"
-                },
-                "modal": {
-                    "ondismiss": function() {
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = originalText;
-                        alert("Payment Cancel ho gaya. Portal me aage badhne ke liye payment zaroori hai.");
-                    }
-                }
+        // Signup Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // IMPORTANT: Class name must match Dashboard logic
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Class-2", // Same format as Class-1
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            const rzp = new Razorpay(options);
-            rzp.open();
-
-        } catch (error) {
-            submitBtn.disabled = false;
-            submitBtn.innerText = originalText;
-            console.error("Signup Error:", error);
-
-            // Agar email pehle se registered hai toh user ko alert deke Login page redirect karein
-            if (error.code === 'auth/email-already-in-use') {
-                if (confirm("Aapka account pehle se bana hua hai! Kya aap Login page par jana chahte hain?")) {
-                    window.location.href = "login.html";
-                }
-            } else if (error.code === 'auth/weak-password') {
-                alert("Password kam se kam 6 characters ka hona chahiye.");
-            } else {
-                alert("Error: " + error.message);
-            }
-        }
-    });
-</script>
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful!");
+                    sessionStorage.setItem('selectedCourse', 'Class-2');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
 </body>
 </html>
