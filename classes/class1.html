@@ -114,13 +114,13 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // "class: Class-3" yahi name aapke Firestore database mein save hoga
+            // "class: Class-1" yahi name aapke Firestore database mein save hoga
             const userData = {
                 name: document.getElementById('sName').value,
                 fatherName: document.getElementById('fName').value,
                 address: document.getElementById('address').value,
                 mobile: document.getElementById('mobile').value,
-                class: "Class-3", // Standard format used in your dashboard
+                class: "Class-1", // Standard format used in your dashboard
                 isPaid: false,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -133,7 +133,7 @@
                 })
                 .then(() => {
                     alert("Registration Successful for Class 3!");
-                    sessionStorage.setItem('selectedCourse', 'Class-3');
+                    sessionStorage.setItem('selectedCourse', 'Class-1');
                     window.location.href = "../dashboard.html";
                 })
                 .catch((error) => {
