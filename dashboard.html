@@ -34,20 +34,34 @@
             <p id="loadingMsg" class="text-gray-500">Loading your content...</p>
         </div>
 
-        <!-- PAYMENT SECTION (UPDATED WITH NEW RAZORPAY LINK) -->
-        <div id="paymentSection" class="hidden bg-yellow-50 border-2 border-yellow-200 p-8 rounded-2xl text-center shadow-lg my-10">
+        <!-- PAYMENT SECTION (UPDATED WITH QR CODE & RAZORPAY LINK) -->
+        <div id="paymentSection" class="hidden bg-yellow-50 border-2 border-yellow-200 p-8 rounded-2xl text-center shadow-lg my-10 max-w-2xl mx-auto">
             <h3 class="text-2xl font-bold text-gray-800 mb-2">Activate Your Course</h3>
             <p class="text-gray-600 mb-6 font-medium text-lg">Aapne abhi tak subscription pay nahi kiya hai. Access ke liye payment karein.</p>
-            <div class="bg-white inline-block px-10 py-5 rounded-2xl shadow-inner mb-6">
-                <span class="text-gray-500 block text-sm uppercase">Course Fee</span>
-                <span class="text-5xl font-black text-green-600"> PLEASE CLICK ON PAYMENT LINK AND SELECT OPTION AS PER YOUR COMFERT</span>
-            </div>
-            <br>
             
+            <div class="bg-white inline-block px-6 py-4 rounded-2xl shadow-inner mb-6 w-full">
+                <span class="text-gray-500 block text-sm uppercase mb-1">Course Fee Payment</span>
+                <span class="text-md font-bold text-gray-700">Scan QR Code or Click Payment Link to Pay</span>
+            </div>
+
+            <!-- QR Code Section -->
+            <div class="bg-white p-4 rounded-2xl shadow-md inline-block mb-6 border border-gray-200">
+                <p class="text-sm font-bold text-gray-600 mb-2">Scan & Pay via Any UPI App</p>
+                <!-- Image Tag: Replace 'qr-code.jpg' with your image filename/path -->
+                <img src="qr-code.jpg" alt="Razorpay UPI QR Code" class="w-64 h-auto mx-auto rounded-lg shadow-sm border">
+                <p class="text-xs text-gray-500 mt-2 font-semibold">DBRRM TRADING COMPANY</p>
+            </div>
+
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <hr class="w-1/4 border-gray-300">
+                <span class="text-gray-400 font-bold text-sm uppercase">OR</span>
+                <hr class="w-1/4 border-gray-300">
+            </div>
+
             <!-- Direct Razorpay Payment Link Button -->
-            <div class="flex justify-center my-4">
+            <div class="flex justify-center my-2">
                 <a href="https://rzp.io/rzp/JLoQAIj" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition duration-200 text-lg flex items-center gap-2">
-                    💳 Pay Now & Activate
+                    💳 Click Here to Pay Online
                 </a>
             </div>
         </div>
