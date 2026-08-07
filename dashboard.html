@@ -47,7 +47,6 @@
             <!-- QR Code Section -->
             <div class="bg-white p-4 rounded-2xl shadow-md inline-block mb-6 border border-gray-200">
                 <p class="text-sm font-bold text-gray-600 mb-2">Scan & Pay via Any UPI App</p>
-                <!-- Raw GitHub Image Link Fix -->
                 <img src="https://raw.githubusercontent.com/Rajnish-Singh-Acedemy/1-12/main/qr-code/QrCode.jpeg" alt="Razorpay UPI QR Code" class="w-64 h-auto mx-auto rounded-lg shadow-sm border">
                 <p class="text-xs text-gray-500 mt-2 font-semibold">DBRRM TRADING COMPANY</p>
             </div>
@@ -174,10 +173,33 @@
                     }
 
                     chaptersArray.forEach((chapMap, index) => {
-                        const keys = Object.keys(chapMap);
-                        const chapterTitle = keys.find(k => k !== 'videoLink' && k !== 'notesLink' && k !== '') || `Chapter ${index + 1}`;
-                        videoURL = chapMap.url || chapMap.videoUrl || chapMap.videoLink || "";
-                        notesURL = chapMap.notesUrl || chapMap.notesLink || chapMap.pdfUrl || "";
+                        let chapterTitle = `Unit ${index + 1}`;
+                        let videoURL = "";
+                        let notesURL = "";
+
+                        if (typeof chapMap === 'object' && chapMap !== null) {
+                            // Extract Key-Value Pairs
+                            const entries = Object.entries(chapMap);
+                            
+                            // Check for standard keys or Key-Value Title-Link pairs
+                            for (const [key, val] of entries) {
+                                if (key === 'url' || key === 'videoUrl' || key === 'videoLink') {
+                                    if (typeof val === 'string') videoURL = val;
+                                } else if (key === 'notesUrl' || key === 'notesLink' || key === 'pdfUrl') {
+                                    if (typeof val === 'string') notesURL = val;
+                                } else if (key !== '' && typeof val === 'string') {
+                                    // Handles cases like "Two Little Hands": "https://www.youtube.com/..."
+                                    chapterTitle = key;
+                                    if (val.startsWith('http')) {
+                                        videoURL = val;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Escape Title for onclick parameter safety
+                        const safeTitle = chapterTitle.replace(/'/g, "\\'");
+
                         grid.innerHTML += `
                             <div class="bg-white p-6 rounded-2xl shadow border-l-4 border-orange-500 hover:shadow-xl transition flex flex-col justify-between">
                                 <div>
@@ -185,7 +207,7 @@
                                     <h4 class="text-xl font-bold text-gray-800 mt-1 mb-4 leading-snug">${chapterTitle}</h4>
                                 </div>
                                 <div class="flex gap-3">
-                                    <button onclick="window.playVideo('${videoURL}', '${chapterTitle}')" 
+                                    <button onclick="window.playVideo('${videoURL}', '${safeTitle}')" 
                                         class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-blue-700 transition shadow-md">
                                         ▶ Video
                                     </button>
@@ -194,23 +216,34 @@
                             </div>`;
                     });
                 } else { grid.innerHTML = "<p class='text-red-500'>Subject details not found.</p>"; }
-            } catch (error) { grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>"; }
+            } catch (error) { 
+                console.error("Error loading chapters:", error);
+                grid.innerHTML = "<p class='text-red-500'>Error loading chapters.</p>"; 
+            }
         }
 
         window.playVideo = function(link, title) {
-            if (!link || link.includes("video link") || link === "") {
+            if (!link || link.trim() === "" || link.includes("video link")) {
                 alert("Iss chapter ki video abhi available nahi hai.");
                 return;
             }
+            
             let videoId = "";
-            if (link.includes("v=")) videoId = link.split("v=")[1].split("&")[0];
-            else if (link.includes("youtu.be/")) videoId = link.split("youtu.be/")[1].split("?")[0];
+            // Robust Regex for extracting YouTube Video ID from any format/URL parameter
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = link.match(regExp);
+
+            if (match && match[2].length === 11) {
+                videoId = match[2];
+            }
             
             if (videoId) {
                 document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 document.getElementById('videoTitle').innerText = title;
                 document.getElementById('videoModal').classList.remove('hidden');
-            } else { alert("Invalid YouTube Link!"); }
+            } else { 
+                alert("Invalid YouTube Link!"); 
+            }
         }
 
         document.getElementById('backBtn').onclick = () => loadSubjects(currentClass);
