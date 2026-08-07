@@ -176,9 +176,8 @@
                     chaptersArray.forEach((chapMap, index) => {
                         const keys = Object.keys(chapMap);
                         const chapterTitle = keys.find(k => k !== 'videoLink' && k !== 'notesLink' && k !== '') || `Chapter ${index + 1}`;
-                        const videoURL = chapMap.videoLink || "";
-                        const notesURL = chapMap.notesLink || "";
-
+                        videoURL = chapMap.url || chapMap.videoUrl || chapMap.videoLink || "";
+                        notesURL = chapMap.notesUrl || chapMap.notesLink || chapMap.pdfUrl || "";
                         grid.innerHTML += `
                             <div class="bg-white p-6 rounded-2xl shadow border-l-4 border-orange-500 hover:shadow-xl transition flex flex-col justify-between">
                                 <div>
