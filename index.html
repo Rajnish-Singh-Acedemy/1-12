@@ -51,7 +51,9 @@
 
             <!-- Updated Accounting Link -->
             <a href="https://rajnish-singh-acedemy.github.io/1-12/accounting/accounting.html" class="hover:underline py-1">Accounting</a>
-            <a href="competitive.html" class="hover:underline py-1">Competitive</a>
+            
+            <!-- Competitive Link (Triggers Popup Modal) -->
+            <a href="javascript:void(0)" onclick="openDevModal()" class="hover:underline py-1">Competitive</a>
             
             <a href="contact.html" class="bg-yellow-400 text-blue-900 px-4 py-1.5 rounded-full font-bold hover:bg-white transition-colors duration-300 shadow-md">
                 Contact Us
@@ -73,7 +75,6 @@
             <a href="academic.html" class="text-blue-600 font-semibold underline">View Courses & Fees</a>
         </div>
 
-        <!-- Updated Professional Training Course Card Link -->
         <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl border-t-4 border-green-500">
             <h3 class="text-xl font-bold">Professionals Training Courses</h3>
             <p class="text-gray-500 my-4">Field training aur professional expertise.</p>
@@ -83,9 +84,51 @@
         <div class="bg-white p-6 rounded-lg shadow hover:shadow-xl border-t-4 border-red-500">
             <h3 class="text-xl font-bold">Competitive Exams</h3>
             <p class="text-gray-500 my-4">SSC, Railway, Bank aur Police taiyari.</p>
-            <a href="competitive.html" class="text-red-600 font-semibold underline">View Courses & Fees</a>
+            <a href="javascript:void(0)" onclick="openDevModal()" class="text-red-600 font-semibold underline">View Courses & Fees</a>
         </div>
     </main>
+
+    <!-- Popup Modal: Work Under Development -->
+    <div id="devModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl border border-gray-100 relative transform transition-all">
+            <!-- Close Icon -->
+            <button onclick="closeDevModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+            
+            <!-- Warning/Alert Icon -->
+            <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Work Under Development</h3>
+            <p class="text-gray-600 text-sm mb-6 leading-relaxed">
+                Kindly register so that our executive will inform you once the work is live.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3">
+                <a href="contact.html" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md">
+                    Register Now
+                </a>
+                <button onclick="closeDevModal()" class="w-full bg-gray-100 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-200 transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to Control Modal Open/Close -->
+    <script>
+        function openDevModal() {
+            document.getElementById('devModal').classList.remove('hidden');
+            document.getElementById('devModal').classList.add('flex');
+        }
+        function closeDevModal() {
+            document.getElementById('devModal').classList.add('hidden');
+            document.getElementById('devModal').classList.remove('flex');
+        }
+    </script>
 
 </body>
 </html>
