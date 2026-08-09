@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 1 | RDX Singh Academy</title>
+    <title>Class 6 | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
@@ -21,9 +21,9 @@
     </header>
 
     <main class="max-w-4xl mx-auto py-10 px-4">
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
+
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
                 <ul class="space-y-2 text-gray-700">
@@ -49,16 +49,105 @@
         <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
             <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
             <p class="my-4 opacity-90">Seats are limited. Secure your future with RDX Singh Academy.</p>
-            <button class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                Enroll Now
-            </button>
-        </div>
 
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg text-center">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
+        </div>
     </main>
+
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">New Student Sign-Up (Class 6)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <hr>
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                    Submit & Register
+                </button>
+            </form>
+        </div>
+    </div>
 
     <footer class="text-center py-6 text-gray-500 text-sm">
         &copy; 2026 RDX Singh Academy. All Rights Reserved.
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Config (Keep this same for the whole project)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI Logic
+        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+
+        // Signup Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Class-6", // Standard format used in your dashboard
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful for Class 6!");
+                    sessionStorage.setItem('selectedCourse', 'Class-6');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
 </body>
 </html>
