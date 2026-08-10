@@ -3,91 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting & Taxation Related Professional Courses - RDX Singh Academy</title>
+    <title>Sr. Executive Accounts & Taxation Course | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .course-card { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #16a34a; }
-        .tab-active { border-bottom: 3px solid #facc15; color: #facc15; }
-    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-<body class="bg-gray-50 font-sans min-h-screen flex flex-col justify-between">
+<body class="bg-gray-50">
 
-    <!-- Header -->
-    <header class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <i class="fas fa-book-open text-yellow-400"></i> Course View Dashboard
-            </h1>
-            <nav class="flex space-x-6 mt-4 md:mt-0 text-sm font-bold uppercase tracking-wider items-center">
-                <a href="https://rajnish-singh-acedemy.github.io/1-12/index.html" class="hover:text-yellow-400 transition py-2">Home</a>
-                
-                <!-- Accounting Dropdown Menu -->
-                <div class="relative group py-2">
-                    <button class="tab-active flex items-center gap-1.5 focus:outline-none cursor-pointer py-1">
-                        Accounting <i class="fas fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
-                    </button>
-                    
-                    <!-- Submenu Dropdown List -->
-                    <div class="absolute left-0 md:right-0 md:left-auto top-full mt-1 w-64 bg-white text-gray-800 rounded-xl shadow-2xl border border-gray-100 hidden group-hover:block transition-all duration-200 z-50 overflow-hidden normal-case font-medium">
-                        <div class="p-2 space-y-1">
-                            <a href="https://rajnish-singh-acedemy.github.io/1-12/accounting/Executive.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-user-tag text-blue-600 w-4"></i> Executive
-                            </a>
-                            <!-- UPDATED LINK BELOW -->
-                            <a href="https://rajnish-singh-acedemy.github.io/1-12/accounting/sr.executive.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-user-tie text-blue-600 w-4"></i> Sr.Executive
-                            </a>
-                            <a href="accounting/manager.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-user-shield text-blue-600 w-4"></i> Manager
-                            </a>
-                            <!-- (Rest of your code remains same) -->
-                             <a href="accounting/gst.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold border-t border-gray-100 pt-2">
-                                <i class="fas fa-file-invoice-dollar text-green-600 w-4"></i> GST
-                            </a>
-                            <a href="accounting/tds.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-percent text-green-600 w-4"></i> TDS
-                            </a>
-                            <a href="accounting/advanced-excel.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-file-excel text-green-600 w-4"></i> Advanced Excel
-                            </a>
-                            <a href="accounting/mis.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold border-t border-gray-100 pt-2">
-                                <i class="fas fa-chart-bar text-purple-600 w-4"></i> MIS
-                            </a>
-                            <a href="accounting/stock-statement.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-boxes text-purple-600 w-4"></i> Stock Statement
-                            </a>
-                            <a href="accounting/balance-sheet.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-balance-scale text-purple-600 w-4"></i> Balance Sheet
-                            </a>
-                            <a href="accounting/cma.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
-                                <i class="fas fa-calculator text-purple-600 w-4"></i> CMA
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+    <!-- Navigation Header -->
+    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">RDX Singh Academy</h1>
+            <a href="../index.html" class="bg-blue-800 px-4 py-2 rounded hover:bg-blue-700 transition">← Back to Home</a>
         </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="py-12 bg-white border-b text-center">
+        <h2 class="text-4xl font-extrabold text-blue-600">Sr. Executive - Accounts & Taxation Training</h2>
+        <p class="mt-2 text-gray-600">Advanced Compliance, Treasury, Taxation, MIS Reporting & Audit Readiness</p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-12 flex-grow">
-        <div class="mb-12">
-            <!-- Course 2: Sr.Executive Level -->
-            <div class="course-card bg-white rounded-2xl p-6 border-t-8 border-blue-600 shadow-sm flex flex-col justify-between">
-                <div>
-                    <h3 class="text-xl font-black text-gray-800 mb-2">Sr. Executive - Accounts Training</h3>
-                    <!-- Description code remains same -->
-                </div>
-                <div>
-                    <!-- UPDATED LINK BELOW -->
-                    <a href="https://rajnish-singh-acedemy.github.io/1-12/accounting/sr.executive.html" class="block text-center bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition uppercase tracking-wider text-xs shadow-md">Explore Course</a>
+    <main class="max-w-5xl mx-auto py-10 px-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Course Topics Section -->
+            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Course Syllabus & Topics Covered</h3>
+                
+                <div class="space-y-6">
+                    <!-- Section 1 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>1. Advanced Financial Accounting & Finalization</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>General Ledger Management:</strong> Accrual accounting, prepaid expenses, deferred revenue, and closing entries.</li>
+                            <li><strong>Fixed Assets (FAR):</strong> Capitalization criteria, depreciation (Companies Act vs. Income Tax Act), disposal, and impairment rules.</li>
+                            <li><strong>Balance Sheet Finalization:</strong> Trial balance scrubbing, inter-company reconciliations, and Schedule III presentation.</li>
+                            <li><strong>Accounting Standards:</strong> Practical application of key AS / Ind AS (Revenue Recognition, Leases, Inventory Valuation).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>2. Direct & Indirect Taxation</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>GST Compliance:</strong> Return filings (GSTR-1, GSTR-3B, GSTR-9/9C), e-invoicing, and E-way bill rules.</li>
+                            <li><strong>Input Tax Credit (ITC):</strong> GSTR-2B vs. books reconciliation, vendor tracking, and ineligible ITC reversal.</li>
+                            <li><strong>Direct Tax & TDS:</strong> TDS/TCS calculation, monthly challans, quarterly filings (24Q, 26Q), and 26AS/AIS reconciliation.</li>
+                            <li><strong>Statutory Compliance:</strong> Payroll deductions (PF, ESI, Professional Tax), Gratuity accounting, and Advance Tax estimation.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>3. Working Capital & Treasury Operations</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Accounts Payable (AP):</strong> 3-way matching (PO, GRN, Invoice), vendor aging, payment schedules, and MSME reporting.</li>
+                            <li><strong>Accounts Receivable (AR):</strong> Collection workflows, DSO tracking, credit limit control, and bad debt provisioning.</li>
+                            <li><strong>Treasury & Banking:</strong> Daily/monthly Bank Reconciliation Statements (BRS) and cash flow tracking.</li>
+                            <li><strong>Trade Finance:</strong> Basics of Letters of Credit (LC), Bank Guarantees (BG), and CMA data preparation for bank limits.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 4 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>4. Financial Analysis & MIS Reporting</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>MIS Dashboards:</strong> Building monthly financial decks (P&L, Cash Flow, Variance Analysis).</li>
+                            <li><strong>Budgeting & Forecasting:</strong> OPEX/CAPEX tracking, zero-based budgeting basics, and rolling forecasts.</li>
+                            <li><strong>Ratio Analysis:</strong> Working capital, liquidity, leverage, and profitability metrics for management decision-making.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 5 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>5. Audit Readiness & Internal Controls</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Statutory & Tax Audits:</strong> Audit schedule preparation, transaction sampling, and handling auditor queries.</li>
+                            <li><strong>Internal Controls (IFC):</strong> Process SOPs, segregation of duties (SoD), and financial risk matrices.</li>
+                            <li><strong>Inventory Control:</strong> Physical verification methods, valuation (FIFO/Weighted Avg), and write-off procedures.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 6 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>6. Advanced Software & Automation</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Advanced Excel:</strong> XLOOKUP, INDEX/MATCH, SUMIFS, Pivot Tables, and Power Query for auto-reconciliation.</li>
+                            <li><strong>ERP Mastery (SAP / Tally / Zoho):</strong> Multi-currency entries, cost center tracking, and automated voucher workflows.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 7 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>7. Leadership & Communication</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Team Supervision:</strong> Reviewing junior executives' vouchers, reconciliations, and entries.</li>
+                            <li><strong>Cross-Functional Alignment:</strong> Working with Sales, Purchase, HR, and Legal teams to enforce finance policies.</li>
+                            <li><strong>Regulatory Writing:</strong> Drafting formal replies for tax notices, auditor letters, and management notes.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <!-- (Rest of your code remains same) -->
+
+            <!-- Course Info & Pricing Section -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 h-fit sticky top-6">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
+                <p class="text-gray-600 mb-2"><strong>Duration:</strong> 30 Days (Practical Training)</p>
+                <div class="mt-4 p-4 bg-green-50 rounded-lg">
+                    <p class="text-3xl font-black text-green-600">₹999/- <span class="text-sm font-normal text-gray-500">(One-time Fee)</span></p>
+                    <p class="text-xs text-gray-600 mt-2">Live Examples, Real Audit Workflows, Practical Reconciliation Sheets & Certification</p>
+                </div>
+
+                <div class="mt-6 bg-amber-50 border-l-2 border-amber-400 p-3 rounded">
+                    <p class="text-xs text-amber-800 font-semibold">
+                        💡 <strong>Note:</strong> Executive Level accounting basics are recommended before taking this course.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admission Callout Section -->
+        <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
+            <h3 class="text-2xl font-bold">Admission Open for Sr. Executive Module!</h3>
+            <p class="my-4 opacity-90">Enroll now to master senior-level finance, taxation, and management reporting skills.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
         </div>
     </main>
+        
+    <!-- Modal Registration Form -->
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Student Sign-Up (Sr. Executive)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <hr>
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+                
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                    Submit & Register
+                </button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Footer remains same -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI Modal Controls
+        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+
+        // Signup & Firestore Sync Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // "class: Sr-Executive-Accounts" Firestore Document payload
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Sr-Executive-Accounts",
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful for Sr. Executive Accounts Course!");
+                    sessionStorage.setItem('selectedCourse', 'Sr-Executive-Accounts');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
 </body>
 </html>
