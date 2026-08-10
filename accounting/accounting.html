@@ -20,9 +20,51 @@
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <i class="fas fa-book-open text-yellow-400"></i> Course View Dashboard
             </h1>
-            <nav class="flex space-x-6 mt-4 md:mt-0 text-sm font-bold uppercase tracking-wider">
-                <a href="https://rajnish-singh-acedemy.github.io/1-12/index.html" class="hover:text-yellow-400 transition">Home</a>
-                <a href="accounting/accounting.html" class="tab-active py-1">Accounting</a>
+            <nav class="flex space-x-6 mt-4 md:mt-0 text-sm font-bold uppercase tracking-wider items-center">
+                <a href="https://rajnish-singh-acedemy.github.io/1-12/index.html" class="hover:text-yellow-400 transition py-2">Home</a>
+                
+                <!-- Accounting Dropdown Menu -->
+                <div class="relative group py-2">
+                    <button class="tab-active flex items-center gap-1.5 focus:outline-none cursor-pointer py-1">
+                        Accounting <i class="fas fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
+                    </button>
+                    
+                    <!-- Submenu Dropdown List -->
+                    <div class="absolute left-0 md:right-0 md:left-auto top-full mt-1 w-64 bg-white text-gray-800 rounded-xl shadow-2xl border border-gray-100 hidden group-hover:block transition-all duration-200 z-50 overflow-hidden normal-case font-medium">
+                        <div class="p-2 space-y-1">
+                            <a href="accounting/executive.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-user-tag text-blue-600 w-4"></i> Executive
+                            </a>
+                            <a href="accounting/sr-executive.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-user-tie text-blue-600 w-4"></i> Sr. Executive
+                            </a>
+                            <a href="accounting/manager.html" class="px-3 py-2 hover:bg-blue-50 hover:text-blue-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-user-shield text-blue-600 w-4"></i> Manager
+                            </a>
+                            <a href="accounting/gst.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold border-t border-gray-100 pt-2">
+                                <i class="fas fa-file-invoice-dollar text-green-600 w-4"></i> GST
+                            </a>
+                            <a href="accounting/tds.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-percent text-green-600 w-4"></i> TDS
+                            </a>
+                            <a href="accounting/advanced-excel.html" class="px-3 py-2 hover:bg-green-50 hover:text-green-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-file-excel text-green-600 w-4"></i> Advanced Excel
+                            </a>
+                            <a href="accounting/mis.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold border-t border-gray-100 pt-2">
+                                <i class="fas fa-chart-bar text-purple-600 w-4"></i> MIS
+                            </a>
+                            <a href="accounting/stock-statement.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-boxes text-purple-600 w-4"></i> Stock Statement
+                            </a>
+                            <a href="accounting/balance-sheet.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-balance-scale text-purple-600 w-4"></i> Balance Sheet
+                            </a>
+                            <a href="accounting/cma.html" class="px-3 py-2 hover:bg-purple-50 hover:text-purple-700 rounded-lg flex items-center gap-2.5 transition text-xs font-semibold">
+                                <i class="fas fa-calculator text-purple-600 w-4"></i> CMA
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
