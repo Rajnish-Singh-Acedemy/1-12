@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 6 | RDX Singh Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gray-50">
 
+    <!-- Navbar -->
     <nav class="bg-blue-600 p-4 text-white shadow-lg">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold">RDX Singh Academy</h1>
@@ -15,25 +19,31 @@
         </div>
     </nav>
 
+    <!-- Header -->
     <header class="py-12 bg-white border-b text-center">
         <h2 class="text-4xl font-extrabold text-blue-600">Class 6 Academic Program</h2>
         <p class="mt-2 text-gray-600">Foundation course designed for excellence.</p>
     </header>
 
+    <!-- Main Content -->
     <main class="max-w-4xl mx-auto py-10 px-4">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
+            <!-- Subjects -->
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li class="flex items-center">✅ Mathematics (Basic)</li>
+                    <li class="flex items-center">✅ Mathematics</li>
                     <li class="flex items-center">✅ English Grammar & Literature</li>
-                    <li class="flex items-center">✅ Hindi / Regional Language</li>
-                    <li class="flex items-center">✅ Environmental Studies (EVS)</li>
+                    <li class="flex items-center">✅ Hindi</li>
+                    <li class="flex items-center">✅ Science</li>
+                    <li class="flex items-center">✅ Social Science</li>
+                    <li class="flex items-center">✅ Sanskrit</li>
                 </ul>
             </div>
 
+            <!-- Course Info -->
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
                 <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year Academic Session</p>
@@ -46,21 +56,25 @@
 
         </div>
 
+        <!-- CTA Banner -->
         <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
             <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
             <p class="my-4 opacity-90">Seats are limited. Secure your future with RDX Singh Academy.</p>
-
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg text-center">
+                <button onclick="openLogin()" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
                     Login (Existing Student)
-                </a>
+                </button>
                 <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
                     New Admission (Sign Up)
                 </button>
             </div>
         </div>
+
     </main>
 
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  SIGNUP MODAL                              -->
+    <!-- ═══════════════════════════════════════════ -->
     <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
@@ -69,85 +83,157 @@
             </div>
 
             <form id="signupForm" class="space-y-4">
-                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
-                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
-                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
-                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <input type="text"     id="sName"    placeholder="Student Full Name"        class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text"     id="fName"    placeholder="Father's Name"             class="w-full p-3 border rounded-lg" required>
+                <input type="text"     id="address"  placeholder="Full Address"              class="w-full p-3 border rounded-lg" required>
+                <input type="tel"      id="mobile"   placeholder="Mobile Number"             class="w-full p-3 border rounded-lg" required>
                 <hr>
-                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
-                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+                <input type="email"    id="email"    placeholder="Email Address (User ID)"   class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password"           class="w-full p-3 border rounded-lg" required>
 
                 <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
                     Submit & Register
                 </button>
             </form>
+
+            <p id="signupMsg" class="mt-3 text-center text-sm hidden"></p>
         </div>
     </div>
 
-    <footer class="text-center py-6 text-gray-500 text-sm">
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  LOGIN MODAL                               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Student Login (Class 6)</h2>
+                <button onclick="closeLogin()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <input type="email"    id="loginEmail"    placeholder="Email Address"  class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="password" id="loginPassword" placeholder="Password"       class="w-full p-3 border rounded-lg" required>
+
+                <button type="submit" id="loginBtn" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition">
+                    Login
+                </button>
+            </form>
+
+            <p id="loginMsg" class="mt-3 text-center text-sm hidden"></p>
+
+            <p class="mt-4 text-center text-sm text-gray-500">
+                New student? 
+                <button onclick="closeLogin(); openSignup();" class="text-blue-600 font-bold hover:underline">Sign Up here</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-gray-500 text-sm mt-10">
         &copy; 2026 RDX Singh Academy. All Rights Reserved.
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  JAVASCRIPT                                -->
+    <!-- ═══════════════════════════════════════════ -->
     <script>
-        // Firebase Config (Keep this same for the whole project)
+        // ── Firebase Config ──────────────────────────────
         const firebaseConfig = {
-            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
-            authDomain: "rdx-singh-acedemy.firebaseapp.com",
-            projectId: "rdx-singh-acedemy",
-            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            apiKey:            "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain:        "rdx-singh-acedemy.firebaseapp.com",
+            projectId:         "rdx-singh-acedemy",
+            storageBucket:     "rdx-singh-acedemy.firebasestorage.app",
             messagingSenderId: "833608207106",
-            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+            appId:             "1:833608207106:web:88c09aee29ed5eff28101b"
         };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.firestore();
+        const db   = firebase.firestore();
 
-        // UI Logic
-        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        // ── Modal Controls ───────────────────────────────
+        function openSignup()  { document.getElementById('signupModal').classList.remove('hidden'); }
         function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+        function openLogin()   { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLogin()  { document.getElementById('loginModal').classList.add('hidden'); }
 
-        // Signup Logic
+        // ── SIGNUP Logic ─────────────────────────────────
         document.getElementById('signupForm').onsubmit = function(e) {
             e.preventDefault();
-            const btn = document.getElementById('regBtn');
-            btn.innerText = "Registering...";
-            btn.disabled = true;
 
-            const email = document.getElementById('email').value;
+            const btn = document.getElementById('regBtn');
+            const msg = document.getElementById('signupMsg');
+            btn.innerText = "Registering...";
+            btn.disabled  = true;
+
+            const email    = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             const userData = {
-                name: document.getElementById('sName').value,
+                name:       document.getElementById('sName').value,
                 fatherName: document.getElementById('fName').value,
-                address: document.getElementById('address').value,
-                mobile: document.getElementById('mobile').value,
-                class: "Class-6", // Standard format used in your dashboard
-                isPaid: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                address:    document.getElementById('address').value,
+                mobile:     document.getElementById('mobile').value,
+                class:      "Class-6",   // ← Class 6 fixed
+                isPaid:     false,
+                createdAt:  firebase.firestore.FieldValue.serverTimestamp()
             };
 
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    const user = userCredential.user;
-                    return db.collection("students").doc(user.uid).set(userData);
+                    return db.collection("students").doc(userCredential.user.uid).set(userData);
                 })
                 .then(() => {
-                    alert("Registration Successful for Class 6!");
+                    msg.textContent  = "✅ Registration Successful!";
+                    msg.className    = "mt-3 text-center text-sm text-green-600";
+                    msg.classList.remove('hidden');
                     sessionStorage.setItem('selectedCourse', 'Class-6');
-                    window.location.href = "../dashboard.html";
+                    setTimeout(() => { window.location.href = "../dashboard.html"; }, 1000);
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    msg.textContent = "❌ " + error.message;
+                    msg.className   = "mt-3 text-center text-sm text-red-600";
+                    msg.classList.remove('hidden');
                     btn.innerText = "Submit & Register";
-                    btn.disabled = false;
+                    btn.disabled  = false;
                 });
         };
+
+        // ── LOGIN Logic ──────────────────────────────────
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('loginBtn');
+            const msg = document.getElementById('loginMsg');
+            btn.innerText = "Logging in...";
+            btn.disabled  = true;
+
+            const email    = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    msg.textContent = "✅ Login Successful! Redirecting...";
+                    msg.className   = "mt-3 text-center text-sm text-green-600";
+                    msg.classList.remove('hidden');
+                    sessionStorage.setItem('selectedCourse', 'Class-6');
+                    setTimeout(() => { window.location.href = "../dashboard.html"; }, 1000);
+                })
+                .catch((error) => {
+                    msg.textContent = "❌ " + error.message;
+                    msg.className   = "mt-3 text-center text-sm text-red-600";
+                    msg.classList.remove('hidden');
+                    btn.innerText = "Login";
+                    btn.disabled  = false;
+                });
+        };
+
+        // ── Close modals on outside click ────────────────
+        window.onclick = function(e) {
+            if (e.target === document.getElementById('signupModal')) closeSignup();
+            if (e.target === document.getElementById('loginModal'))  closeLogin();
+        };
     </script>
+
 </body>
 </html>
