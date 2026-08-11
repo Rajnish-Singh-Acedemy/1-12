@@ -3,37 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class 1 | RDX Singh Academy</title>
+    <title>Class 8 | RDX Singh Academy</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Firebase Compatibility SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gray-50">
 
-    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 p-4 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold">RDX Singh Academy</h1>
-            <a href="../index.html" class="bg-blue-800 px-4 py-2 rounded hover:bg-blue-700 transition">← Back to Home</a>
+            <h1 class="text-xl font-bold tracking-wide">RDX Singh Academy</h1>
+            <a href="../index.html" class="bg-blue-800 px-4 py-2 rounded text-sm hover:bg-blue-700 transition">← Back to Home</a>
         </div>
     </nav>
 
+    <!-- Header Section -->
     <header class="py-12 bg-white border-b text-center">
         <h2 class="text-4xl font-extrabold text-blue-600">Class 8 Academic Program</h2>
         <p class="mt-2 text-gray-600">Foundation course designed for excellence.</p>
     </header>
 
+    <!-- Main Content -->
     <main class="max-w-4xl mx-auto py-10 px-4">
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
+            <!-- Subjects Covered -->
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Subjects Covered</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li class="flex items-center">✅ Mathematics (Basic)</li>
+                    <li class="flex items-center">✅ Mathematics (Algebra & Geometry)</li>
+                    <li class="flex items-center">✅ Science (Physics, Chemistry, Biology)</li>
+                    <li class="flex items-center">✅ Social Science (History, Civics, Geography)</li>
                     <li class="flex items-center">✅ English Grammar & Literature</li>
-                    <li class="flex items-center">✅ Hindi / Regional Language</li>
-                    <li class="flex items-center">✅ Environmental Studies (EVS)</li>
+                    <li class="flex items-center">✅ Hindi & Sanskrit / Regional Language</li>
+                    <li class="flex items-center">✅ Basics of Computer Science</li>
                 </ul>
             </div>
 
+            <!-- Course Info -->
             <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
                 <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
                 <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Year Academic Session</p>
@@ -46,19 +59,113 @@
 
         </div>
 
+        <!-- Call To Action -->
         <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
             <h3 class="text-2xl font-bold">Admission Open for 2026!</h3>
             <p class="my-4 opacity-90">Seats are limited. Secure your future with RDX Singh Academy.</p>
-            <button class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                Enroll Now
-            </button>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg text-center">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-8 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
         </div>
 
     </main>
 
+    <!-- Sign-Up Modal -->
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">New Student Sign-Up (Class 8)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl font-bold">&times;</button>
+            </div>
+            
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <hr class="my-2">
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition shadow">
+                    Submit & Register
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="text-center py-6 text-gray-500 text-sm">
         &copy; 2026 RDX Singh Academy. All Rights Reserved.
     </footer>
 
+    <!-- Firebase Script Logic -->
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI Modal Logic
+        function openSignup() { 
+            document.getElementById('signupModal').classList.remove('hidden'); 
+        }
+        function closeSignup() { 
+            document.getElementById('signupModal').classList.add('hidden'); 
+        }
+
+        // Signup Form Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Class-8",
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful for Class 8!");
+                    sessionStorage.setItem('selectedCourse', 'Class-8');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
 </body>
 </html>
