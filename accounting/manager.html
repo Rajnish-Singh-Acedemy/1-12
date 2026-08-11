@@ -1,1 +1,228 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager - Finance, Accounts & Taxation Course | RDX Singh Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-50">
 
+    <!-- Navigation Header -->
+    <nav class="bg-blue-600 p-4 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">RDX Singh Academy</h1>
+            <a href="../index.html" class="bg-blue-800 px-4 py-2 rounded hover:bg-blue-700 transition">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="py-12 bg-white border-b text-center">
+        <h2 class="text-4xl font-extrabold text-blue-600">Manager - Finance, Accounts & Taxation Training</h2>
+        <p class="mt-2 text-gray-600">Strategic Financial Leadership, Advanced Taxation, Budgeting, Advisory & Virtual CFO Operations</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto py-10 px-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Course Topics Section -->
+            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Course Syllabus & Topics Covered</h3>
+                
+                <div class="space-y-6">
+                    <!-- Section 1 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>1. Strategic Financial Controller Operations & Reporting</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Executive Financial Review:</strong> Consolidation of multi-entity financial statements and group balance sheets.</li>
+                            <li><strong>Board & Leadership Presentations:</strong> Executive P&L summaries, EBITDA management, and board-deck preparation.</li>
+                            <li><strong>Ind AS / IFRS Governance:</strong> Strategic compliance, complex revenue recognition policies, and GAAP transition frameworks.</li>
+                            <li><strong>Statutory Audits Management:</strong> Managing Big 4 / statutory auditors, resolving audit qualifications, and Sign-off workflows.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 2 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>2. Advanced Tax Planning, Litigations & Assessment</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>GST Litigation & Audits:</strong> Handling GST notices (ASMT-10, DRC-01), filing appeals (Form APL-01), and managing GST audits (GSTR-9/9C).</li>
+                            <li><strong>Corporate Tax & Transfer Pricing:</strong> Tax planning strategies, Form 3CD analysis, DTAA, and domestic/international Transfer Pricing compliance.</li>
+                            <li><strong>Direct Tax Assessment & Notices:</strong> Replying to Income Tax notices u/s 142(1), 148, and handling faceless assessment proceedings.</li>
+                            <li><strong>Tax Risk Mitigation:</strong> Designing internal tax control policies to ensure 100% statutory compliance across operations.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 3 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>3. Strategic Treasury, Corporate Finance & Fund Raising</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Working Capital Management:</strong> Advanced cash flow forecasting, optimizing cash conversion cycle (CCC), and liquidity management.</li>
+                            <li><strong>Bank Financing & CMA Data:</strong> Preparation of detailed CMA data, Project Reports, Term Loan proposals, and Working Capital limits (CC/OD/LC/BG).</li>
+                            <li><strong>Capital Budgeting:</strong> Evaluating investments using NPV, IRR, Payback Period, and WACC calculations.</li>
+                            <li><strong>FX & Hedging Strategies:</strong> Managing Foreign Exchange risk, trade finance, import/export compliance (EDPMS/IDPMS).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 4 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>4. Financial Planning, Analysis (FP&A) & Cost Optimization</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Budgeting & Zero-Based Budgeting (ZBB):</strong> Designing annual operating plans (AOP), departmental budgets, and rolling forecasts.</li>
+                            <li><strong>Advanced Variance Analysis:</strong> Material, labor, overhead, and margin variance tracking with corrective action plans.</li>
+                            <li><strong>Cost Control & Value Engineering:</strong> Product pricing models, activity-based costing (ABC), and operational cost reduction strategies.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 5 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>5. Virtual CFO Services & Business Advisory</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>Virtual CFO Frameworks:</strong> Building scalable finance functions, pitch decks, and financial modeling for startups/SMEs.</li>
+                            <li><strong>Valuation & M&A Basics:</strong> Business valuation metrics (DCF, Multiples), due diligence processes, and deal structuring.</li>
+                            <li><strong>Internal Financial Controls (IFC):</strong> Designing Risk Control Matrix (RCM), SoD policy implementation, and fraud detection frameworks.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 6 -->
+                    <div>
+                        <h4 class="font-bold text-lg text-blue-700 flex items-center gap-2">
+                            <span>6. Automation, ERP Implementation & Team Management</span>
+                        </h4>
+                        <ul class="mt-2 space-y-1.5 text-sm text-gray-700 pl-6 list-disc">
+                            <li><strong>ERP Controls (SAP/Oracle/Tally):</strong> Overseeing ERP migrations, workflow authorization setups, and automated reporting.</li>
+                            <li><strong>Leadership & Strategy:</strong> Leading finance teams, KRA/KPI mapping, cross-departmental alignment, and decision-making frameworks.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Info & Pricing Section -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500 h-fit sticky top-6">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Course Info</h3>
+                <p class="text-gray-600 mb-2"><strong>Duration:</strong> 1 Day (Masterclass & Practical Strategic Training)</p>
+                <div class="mt-4 p-4 bg-green-50 rounded-lg">
+                    <p class="text-3xl font-black text-green-600">₹999/- <span class="text-sm font-normal text-gray-500">(One-time Fee)</span></p>
+                    <p class="text-xs text-gray-600 mt-2">Strategic Case Studies, Virtual CFO Blueprints, Notice Resolution Frameworks & Senior Leadership Certification</p>
+                </div>
+
+                <div class="mt-6 bg-amber-50 border-l-2 border-amber-400 p-3 rounded">
+                    <p class="text-xs text-amber-800 font-semibold">
+                        💡 <strong>Note:</strong> Prior experience in Accounts, Tax, or Executive-level Finance is highly recommended for this Managerial Module.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admission Callout Section -->
+        <div class="mt-12 bg-blue-600 text-white p-8 rounded-2xl text-center shadow-xl">
+            <h3 class="text-2xl font-bold">Admission Open for Manager Level Module!</h3>
+            <p class="my-4 opacity-90">Enroll now to master strategic finance, tax advisory, virtual CFO, and managerial leadership skills.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="../login.html" class="bg-white text-blue-600 font-bold px-10 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login (Existing Student)
+                </a>
+                <button onclick="openSignup()" class="bg-yellow-400 text-blue-900 font-bold px-10 py-3 rounded-full hover:bg-yellow-300 transition shadow-lg">
+                    New Admission (Sign Up)
+                </button>
+            </div>
+        </div>
+    </main>
+        
+    <!-- Modal Registration Form -->
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Student Sign-Up (Manager Module)</h2>
+                <button onclick="closeSignup()" class="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            
+            <form id="signupForm" class="space-y-4">
+                <input type="text" id="sName" placeholder="Student Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="fName" placeholder="Father's Name" class="w-full p-3 border rounded-lg" required>
+                <input type="text" id="address" placeholder="Full Address" class="w-full p-3 border rounded-lg" required>
+                <input type="tel" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-lg" required>
+                <hr>
+                <input type="email" id="email" placeholder="Email Address (User ID)" class="w-full p-3 border rounded-lg" required>
+                <input type="password" id="password" placeholder="Create Password" class="w-full p-3 border rounded-lg" required>
+                
+                <button type="submit" id="regBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                    Submit & Register
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoflPLOwZ6Ol8FgmCiIMx4Lgn-qSap4Ps",
+            authDomain: "rdx-singh-acedemy.firebaseapp.com",
+            projectId: "rdx-singh-acedemy",
+            storageBucket: "rdx-singh-acedemy.firebasestorage.app",
+            messagingSenderId: "833608207106",
+            appId: "1:833608207106:web:88c09aee29ed5eff28101b"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI Modal Controls
+        function openSignup() { document.getElementById('signupModal').classList.remove('hidden'); }
+        function closeSignup() { document.getElementById('signupModal').classList.add('hidden'); }
+
+        // Signup & Firestore Sync Logic
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            btn.innerText = "Registering...";
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // "class: Manager-Finance-Accounts" Firestore Document payload
+            const userData = {
+                name: document.getElementById('sName').value,
+                fatherName: document.getElementById('fName').value,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                class: "Manager-Finance-Accounts",
+                isPaid: false,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    return db.collection("students").doc(user.uid).set(userData);
+                })
+                .then(() => {
+                    alert("Registration Successful for Manager - Finance & Accounts Course!");
+                    sessionStorage.setItem('selectedCourse', 'Manager-Finance-Accounts');
+                    window.location.href = "../dashboard.html";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    btn.innerText = "Submit & Register";
+                    btn.disabled = false;
+                });
+        };
+    </script>
+</body>
+</html>
